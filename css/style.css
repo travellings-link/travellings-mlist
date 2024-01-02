@@ -673,7 +673,7 @@ video {
 /* table background */
 #dataTable {
   background-color: #ffffffaa;
-  backdrop-filter: blur(10px);
-  -webkit-backdrop-filter: blur(10px);
+  backdrop-filter: blur(7px);
+  -webkit-backdrop-filter: blur(7px);
   border-radius: 0.375rem;
 }
