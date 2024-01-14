@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>新增网站 | 开往</title>
+    <link href="https://unpkg.zhimg.com/bootstrap@4.4.1/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="/css/style.css">
+</head>
+
+<body>
+    <div class="container mt-4 mb-4">
+        <div class="main p-3">
+            <h3>新增网站</h3>
+            <div class="alert alert-primary" style="display: none;" id="info"></div>
+            <div class="mt-3">
+                    <label for="websiteName">网站名称:</label>
+                    <input type="text" class="form-control mb-3" id="websiteName" placeholder="请输入网站名称">
+                    <label for="websiteLink">网站链接:</label>
+                    <input type="url" class="form-control mb-3" id="websiteLink" placeholder="请输入网站链接">
+                    <label for="tag">TAG:</label>
+                    <input type="text" class="form-control mb-3" id="tag" placeholder="请输入TAG，默认为“go”">
+                <button id="submitBtn" class="btn btn-primary">
+                    <span class="spinner-border spinner-border-sm" style="display: none;" id="spinner"></span>
+                    提交</button>
+            </div>
+        </div>
+
+        
+    </div>
+    <script src="https://unpkg.zhimg.com/jquery@3/dist/jquery.min.js"></script>
+    <script>
+        let showInfo = msg => {
+            $('#info').text(msg).slideDown();
+            setTimeout(() => {
+                $('#info').slideUp();
+            }, 3000);
+        }
+
+        let showSpinner = () => {
+            $("#submitBtn").attr("disabled", true);
+            $("#spinner").show();
+        }
+
+        let hideSpinner = () => {
+            $("#submitBtn").attr("disabled", false);
+            $("#spinner").hide();
+        }
+
+        let update = async () => {
+
+            let name = $('#websiteName').val();
+            let link = $('#websiteLink').val();
+            let tag = $('#tag').val();
+            if (!name || !link) {
+                showInfo('网站名称和链接不能为空');
+                return;
+            }
+            
+            showSpinner();
+
+            let res = await $.post("https://api.travellings.cn/action/add", {
+                name,
+                link,
+                tag
+            });
+
+            if (res.success) {
+                // 添加成功则清除输入框便于下次输入
+                $('#websiteName').val('');
+                $('#websiteLink').val('');
+                $('#tag').val('');
+            }
+
+            showInfo(res.msg)
+            
+            hideSpinner();
+        }
+
+        $("#submitBtn").click(update);
+    </script>
+</body>
+
+</html>
