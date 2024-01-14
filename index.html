@@ -155,6 +155,8 @@
             $("#username").text(`${username} (${userRole})`);            
         }
 
+        checkUser();
+
         let logout = async () => {
             if (!confirm("确定要退出登录吗？")) return;
 
