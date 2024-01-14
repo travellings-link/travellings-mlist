@@ -46,7 +46,7 @@
                 <a class="btn btn-primary mb-2" href="https://github.com/travellings-link/travellings/issues"><i class="fa fa-plus"></i> 申请加入</a>
                 <a class="btn btn-secondary mb-2" href="https://www.travellings.cn/"><i class="fa fa-home"></i> 返回官网</a>
                 <a class="btn btn-dark mb-2" href="https://www.travellings.cn/go.html"><i class="fa fa-subway"></i> 开往</a>
-                <a class="btn btn-success adminOnly mb-2" href="./add.html"><i class="fa fa-plus"></i> 新增网站</a>
+                <a class="btn btn-success adminOnly mb-2" href="./user/admin/add.html"><i class="fa fa-plus"></i> 新增网站</a>
                 <a class="btn btn-light adminOnly mb-2" href="javascript:;" onclick="logout()"><i class="fa fa-sign-out"></i> <span id="username"></span></a>
             </div>
             <table class="table mt-3">
@@ -84,7 +84,7 @@
                         <td class="pcOnly">${data[i].status}</td>
                         <td class="pcOnly">${data[i].tag}</td>
                         <td class="adminOnly">
-                            <a href="edit.html?id=${data[i].id}"><i class="fa fa-edit"></i></a>
+                            <a href="./user/admin/edit.html?id=${data[i].id}"><i class="fa fa-edit"></i></a>
                             <a href="javascript:;" onclick="del(${data[i].id})"><i class="fa fa-trash"></i></a>
                         </td>
                     </tr>
