@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Travellings - 成员列表</title>
+  <link rel="stylesheet" href="https://cdn.xcnya.cn/Basic/assets/fonts/lxgw-wenkai-screen-webfont/style.css" />
+  <link rel="stylesheet" type="text/css" href="css/font.css">
+  <link rel="stylesheet" type="text/css" href="css/style-old.css">
+</head>
+<body>
+  <div class="max-w-4xl mx-auto mt-10">
+    <div class="flex justify-between mb-4">
+      <h1 class="text-xl font-semibold"><a href="javascript:location.reload();">Travellings - 成员列表</a></h1>
+      <input
+        class="border rounded-md p-2"
+        placeholder="搜索站点..."
+        type="search"
+        style="align-self: center;"
+      />
+    </div>
+    <div class="relative w-full overflow-auto">
+      <table id="dataTable" class="w-full caption-bottom text-sm">
+        <thead class="[&amp;_tr]:border-b">
+          <tr class="border-b transition-colors hover:bg-muted/50 data-[state=selected]:bg-muted">
+            <th class="h-12 px-4 text-left align-middle font-medium text-muted-foreground [&amp;:has([role=checkbox])]:pr-0 w-[200px]">
+              ID
+            </th>
+            <th class="h-12 px-4 text-left align-middle font-medium text-muted-foreground [&amp;:has([role=checkbox])]:pr-0 w-[200px]">
+              站点名称
+            </th>
+            <th class="h-12 px-4 text-left align-middle font-medium text-muted-foreground [&amp;:has([role=checkbox])]:pr-0 w-[300px]">
+              站点链接
+            </th>
+            <th class="h-12 px-4 text-left align-middle font-medium text-muted-foreground [&amp;:has([role=checkbox])]:pr-0 w-[150px]">
+              巡查状态
+            </th>
+            <th class="h-12 px-4 text-left align-middle font-medium text-muted-foreground [&amp;:has([role=checkbox])]:pr-0 w-[150px]">
+              TAG
+            </th>
+          </tr>
+        </thead>
+        <tbody id="tableBody" class="[&amp;_tr:last-child]:border-0">
+          <script src="js/getData.js"></script>
+        </tbody>
+      </table>
+    </div>
+  </div>
