@@ -60,11 +60,19 @@
             
             showSpinner();
 
-            // let res = await $.post("https://api.travellings.cn/add");
-            let res = {
-                code: 0,
-                msg: "test"
-            } // 测试用
+            let res = await $.post("https://api.travellings.cn/action/add", {
+                name,
+                link,
+                tag
+            });
+
+            if (res.success) {
+                // 添加成功则清除输入框便于下次输入
+                $('#websiteName').val('');
+                $('#websiteLink').val('');
+                $('#tag').val('');
+            }
+
             showInfo(res.msg)
             
             hideSpinner();

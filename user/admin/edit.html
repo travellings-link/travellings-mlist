@@ -19,6 +19,8 @@
                     <input type="text" class="form-control mb-3" id="websiteName" placeholder="请输入网站名称">
                     <label for="websiteLink">网站链接:</label>
                     <input type="url" class="form-control mb-3" id="websiteLink" placeholder="请输入网站链接">
+                    <label for="status">网站状态:</label>
+                    
                     <label for="tag">TAG:</label>
                     <input type="text" class="form-control mb-3" id="tag" placeholder="请输入TAG，默认为“go”">
                 <button id="submitBtn" class="btn btn-primary">
@@ -48,20 +50,14 @@
 
         let getOriginalData = async () => {
             let websiteId = getWebsiteIdFromURL(); // 获取网站id
-            // let res = await $.get(`https://api.travellings.cn/get?id=${websiteId}`); // 发送获取网站信息请求
-            let res = {
-                code: 0,
-                data: {
-                    name: "testName",
-                    link: "testLink",
-                    tag: "testTag"
-                }
-            } // 测试用
-            if (res.code !== 0) {
+            let res = await $.get(`https://api.travellings.cn/action/${websiteId}`); // 发送获取网站信息请求
+            
+            if (!res.success) {
                 showInfo(res.msg);
                 return;
             }
-            let { name, link, tag } = res.data;
+
+            let { name, link, status, tag } = res.data;
             $('#websiteName').val(name);
             $('#websiteLink').val(link);
             $('#tag').val(tag);
