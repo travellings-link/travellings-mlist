@@ -64,7 +64,7 @@
             let websiteId = getWebsiteIdFromURL(); // 获取网站id
             let res = null;
             try {
-                res = await $.get(`https://api.travellings.cn/action/${websiteId}`); // 发送获取网站信息请求
+                res = await $.getJSON(`https://api.travellings.cn/action/${websiteId}?token=${localStorage.tlogin}`);
             } catch (error) {
                 showInfo(error.responseJSON.msg);
                 return;
@@ -93,7 +93,7 @@
 
             // 发送更新请求
             try {
-                let res = await $.post(`https://api.travellings.cn/action/edit?token=${localStorage.tlogin}`, {id, name, link, tag, status });
+                let res = await $.post(`https://api.travellings.cn/action/edit?token=${localStorage.tlogin}`, JSON.stringify({id, name, link, tag, status }));
                 showInfo(res.msg)
             } catch (error) {
                 showInfo(error.responseJSON.msg);

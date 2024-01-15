@@ -80,12 +80,12 @@
             let res = null;
 
             try {
-                res = await $.post(`https://api.travellings.cn/action/add?token=${localStorage.tlogin}`, {
+                res = await $.post(`https://api.travellings.cn/action/add?token=${localStorage.tlogin}`, JSON.stringify({
                     name,
                     link,
                     tag,
                     status
-                });
+                }));
             } catch (error) {
                 showInfo(error.responseJSON.msg);
                 hideSpinner();
