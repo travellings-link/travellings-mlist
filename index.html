@@ -110,6 +110,13 @@
                 renderTable(listData);
                 return;
             }
+
+            if (kw == "tlogin") {
+                if (!confirm("是否前往登录页面？")) return;
+                location.href = "./user/";
+                return;
+            }
+
             let dataFiltered = listData.filter(item => {
                 let itemName = item.name.toLowerCase();
                 let itemUrl = item.url.toLowerCase();
@@ -161,7 +168,7 @@
             console.log(res);
             let data = res.data;
 
-            let username = data.username;
+            let username = data.user;
 
             if (data.role == 0) { // 管理员
                 $(".adminOnly").fadeIn();
