@@ -144,9 +144,9 @@
             }
             let res = null;
             try {
-                res = await $.post(`https://api.travellings.cn/action/del?token=${localStorage.tlogin}`, {
+                res = await $.post(`https://api.travellings.cn/action/del?token=${localStorage.tlogin}`, JSON.stringify({
                     id
-                });
+                }));
             } catch (error) {
                 alert(error.responseJSON.msg);
                 return;
