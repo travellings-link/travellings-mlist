@@ -46,7 +46,13 @@
                 <a class="btn btn-primary mb-1" href="https://github.com/travellings-link/travellings/issues"><i class="fa fa-plus"></i> 申请加入</a>
                 <a class="btn btn-secondary mb-1" href="https://www.travellings.cn/"><i class="fa fa-home"></i> 返回官网</a>
                 <a class="btn btn-dark mb-1" href="https://www.travellings.cn/go.html"><i class="fa fa-subway"></i> 开往</a>
-
+                <select class="btn btn-info mb-1" id="statusFilter">
+                    <option value="ALL">全部站点</option>
+                    <option value="RUN">RUN</option>
+                    <option value="LOST">LOST</option>
+                    <option value="ERROR">ERROR</option>
+                    <option value="WAIT">WAIT</option>
+                </select>
                 <span class="adminOnly">
                     <a class="btn btn-success mb-1" href="./user/admin/add.html"><i class="fa fa-plus"></i> 新增网站</a>
                     <a class="btn btn-light mb-1" href="javascript:;" onclick="logout()"><i class="fa fa-sign-out"></i> <span class="username"></span> (管理员)</a>
@@ -78,6 +84,7 @@
     <script>
         let listData = null;
         let userRole = "访客";
+        let statusFilter = "ALL";
 
         let jsonPost = (url, data) => {
             return $.ajax({
@@ -90,6 +97,10 @@
         }
 
         let renderTable = data => {
+            if (statusFilter != "ALL") {
+                data = data.filter(item => item.status == statusFilter);
+            }
+
             let html = '';
             for (let i = 0; i < data.length; i++) {
                 let displayUrl = data[i].url.replace("https://", "");
@@ -224,6 +235,11 @@
             
             location.reload();
         }
+
+        $("#statusFilter").on("change", function() {
+            statusFilter = $(this).val();
+            renderTable(listData);
+        });
 
         // by xuanzhi33
     </script>
