@@ -137,7 +137,9 @@
             }
             let res = null;
             try {
-                res = await $.post("https://api.travellings.cn/action/del", {id});
+                res = await $.post(`https://api.travellings.cn/action/del?token=${localStorage.tlogin}`, {
+                    id
+                });
             } catch (error) {
                 alert(error.responseJSON.msg);
                 return;
@@ -152,12 +154,12 @@
         }
 
         let checkUser = async () => {
-            let res = await $.getJSON("https://api.travellings.cn/user");
+            let token = localStorage.tlogin;
+            if (!token) return; // 未登录
+
+            let res = await $.getJSON(`https://api.travellings.cn/user?token=${token}`);
             console.log(res);
             let data = res.data;
-            if (data.role == 2) { // 未登录
-                return;
-            }
 
             let username = data.username;
 
@@ -182,8 +184,10 @@
         let logout = async () => {
             if (!confirm("确定要退出登录吗？")) return;
 
-            let res = await $.getJSON("https://api.travellings.cn/logout");
+            let res = await $.getJSON(`https://api.travellings.cn/logout?token=${localStorage.tlogin}`);
             alert(res.msg);
+            localStorage.removeItem("tlogin");
+            
             location.reload();
         }
 

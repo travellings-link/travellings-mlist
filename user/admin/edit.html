@@ -93,7 +93,7 @@
 
             // 发送更新请求
             try {
-                let res = await $.post(`https://api.travellings.cn/action/edit`, { id, name, link, tag, status });
+                let res = await $.post(`https://api.travellings.cn/action/edit?token=${localStorage.tlogin}`, {id, name, link, tag, status });
                 showInfo(res.msg)
             } catch (error) {
                 showInfo(error.responseJSON.msg);
