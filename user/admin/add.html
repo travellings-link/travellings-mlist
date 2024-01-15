@@ -45,6 +45,11 @@
     </div>
     <script src="https://unpkg.zhimg.com/jquery@3/dist/jquery.min.js"></script>
     <script>
+        if (!localStorage.tlogin) {
+            alert("您尚未登录，点击确定后跳转至登录页面。");
+            location.href = "../";
+        }
+
         let jsonPost = (url, data) => {
             return $.ajax({
                 url,
