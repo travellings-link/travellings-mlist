@@ -12,20 +12,32 @@
 <body>
     <div class="container mt-4 mb-4">
         <div class="main p-3">
-            <h3>编辑网站</h3>
+            <h3>编辑网站 <span class="badge badge-secondary">ID: <span id="siteID">0</span></span></h3>
             <div class="alert alert-primary" style="display: none;" id="info"></div>
             <div class="mt-3">
-                    <label for="websiteName">网站名称:</label>
-                    <input type="text" class="form-control mb-3" id="websiteName" placeholder="请输入网站名称">
-                    <label for="websiteLink">网站链接:</label>
-                    <input type="url" class="form-control mb-3" id="websiteLink" placeholder="请输入网站链接">
-                    <label for="status">网站状态:</label>
-                    
-                    <label for="tag">TAG:</label>
-                    <input type="text" class="form-control mb-3" id="tag" placeholder="请输入TAG，默认为“go”">
+                <label for="websiteName">网站名称:</label>
+                <input type="text" class="form-control mb-3" id="websiteName" placeholder="请输入网站名称">
+                <label for="websiteLink">网站链接:</label>
+                <input type="url" class="form-control mb-3" id="websiteLink" placeholder="请输入网站链接">
+                <div class="row">
+                    <div class="col-6">
+                        <label for="status">网站状态:</label>
+                        <select class="form-control mb-3" id="status">
+                            <option value="RUN">RUN</option>
+                            <option value="LOST">LOST</option>
+                            <option value="ERROR">ERROR</option>
+                            <option value="WAIT">WAIT</option>
+                        </select>
+                    </div>
+                    <div class="col-6">
+                        <label for="tag">TAG:</label>
+                        <input type="text" class="form-control mb-3" id="tag" placeholder="留空则为“go”">
+                    </div>
+                </div>
                 <button id="submitBtn" class="btn btn-primary">
                     <span class="spinner-border spinner-border-sm" style="display: none;" id="spinner"></span>
                     更新</button>
+                <a href="../../" class="btn btn-secondary">返回列表</a>
             </div>
         </div>
     </div>
@@ -50,8 +62,14 @@
 
         let getOriginalData = async () => {
             let websiteId = getWebsiteIdFromURL(); // 获取网站id
-            let res = await $.get(`https://api.travellings.cn/action/${websiteId}`); // 发送获取网站信息请求
-            
+            let res = null;
+            try {
+                res = await $.get(`https://api.travellings.cn/action/${websiteId}`); // 发送获取网站信息请求
+            } catch (error) {
+                showInfo(error.responseJSON.msg);
+                return;
+            }
+
             if (!res.success) {
                 showInfo(res.msg);
                 return;
@@ -61,28 +79,26 @@
             $('#websiteName').val(name);
             $('#websiteLink').val(link);
             $('#tag').val(tag);
+            $('#status').val(status);
         }
 
         let update = async () => {
-            let websiteId = getWebsiteIdFromURL(); // 获取网站id
+            let id = getWebsiteIdFromURL(); // 获取网站id
             let name = $('#websiteName').val();
             let link = $('#websiteLink').val();
             let tag = $('#tag').val();
-            if (!name || !link) {
-                showInfo('网站名称和链接不能为空');
-                return;
-            }
-            
+            let status = $('#status').val();
+
             showSpinner();
 
             // 发送更新请求
-            // let res = await $.post(`https://api.travellings.cn/update`, { id, name, link, tag });
-            let res = {
-                code: 0,
-                msg: "test"
-            } // 测试用
-            showInfo(res.msg)
-            
+            try {
+                let res = await $.post(`https://api.travellings.cn/action/edit`, { id, name, link, tag, status });
+                showInfo(res.msg)
+            } catch (error) {
+                showInfo(error.responseJSON.msg);
+            }
+
             hideSpinner();
         }
 
@@ -94,7 +110,9 @@
             return urlParams.get('id');
         }
 
-        if (getWebsiteIdFromURL()) {
+        let siteID = getWebsiteIdFromURL();
+        if (siteID) {
+            $('#siteID').text(siteID);
             getOriginalData();
         } else {
             showInfo('id参数不能为空');
