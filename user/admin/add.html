@@ -80,7 +80,7 @@
             let res = null;
 
             try {
-                res = await $.post("https://api.travellings.cn/action/add", {
+                res = await $.post(`https://api.travellings.cn/action/add?token=${localStorage.tlogin}`, {
                     name,
                     link,
                     tag,

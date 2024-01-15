@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>登录成功 | 开往</title>
+    <link href="https://unpkg.zhimg.com/bootstrap@4.4.1/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.staticfile.org/font-awesome/4.7.0/css/font-awesome.min.css">
+    <link rel="stylesheet" href="/css/style.css">
+</head>
+
+<body>
+    <div class="container mt-4 mb-4">
+        <div class="main p-3">
+            <h3>登录成功</h3>
+            <button class="btn btn-success btn-lg btn-block mt-4" id="loginBtn">
+                <i class="fa fa-github"></i> 登录成功，正在返回首页
+                <span class="spinner-border spinner-border-sm" style="display: none;" id="spinner"></span>
+            </button>
+            <div class="mt-3">
+                &copy; 开往
+            </div>
+        </div>
+    </div>
+    <script src="https://unpkg.zhimg.com/jquery@3/dist/jquery.min.js"></script>
+    <script>
+        function GetUrlByParamName(name) {
+            var reg = new RegExp("(^|&)" + name + "=([^&]*)(&|$)");
+            var URL = decodeURI(window.location.search);
+            var r = URL.substr(1).match(reg);
+            if (r != null) {
+                //decodeURI() 函数可对 encodeURI() 函数编码过的 URI 进行解码  
+                return decodeURI(r[2]);
+            };
+            return null;
+        }
+
+        let token = GetUrlByParamName("token");
+        if (!token) {
+            location.href = "./";
+        }
+
+
+        let showSpinner = () => {
+            $("#loginBtn").attr("disabled", true);
+            $("#spinner").show();
+        }
+        let hideSpinner = () => {
+            $("#loginBtn").attr("disabled", false);
+            $("#spinner").hide();
+        }
+
+        showSpinner();
+
+        localStorage.tlogin = token;
+
+
+        history.replaceState({}, null, location.pathname);
+
+        setTimeout(() => {
+            location.href = "../";
+        }, 1500);
+    </script>
+</body>
+
+</html>
