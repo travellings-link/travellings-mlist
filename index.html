@@ -46,6 +46,9 @@
                 <a class="btn btn-primary mb-1" href="https://github.com/travellings-link/travellings/issues"><i class="fa fa-plus"></i> 申请加入</a>
                 <a class="btn btn-secondary mb-1" href="https://www.travellings.cn/"><i class="fa fa-home"></i> 返回官网</a>
                 <a class="btn btn-dark mb-1" href="https://www.travellings.cn/go.html"><i class="fa fa-subway"></i> 开往</a>
+                <button class="btn btn-secondary mb-1" id="refreshBtn"><i class="fa fa-refresh"></i> 刷新数据
+                    <span class="spinner-border spinner-border-sm" style="display: none;" id="refreshSpinner"></span>
+                </button>
                 <select class="btn btn-info mb-1" id="statusFilter">
                     <option value="ALL">全部站点</option>
                     <option value="RUN">RUN</option>
@@ -259,6 +262,14 @@
         $("#statusFilter").on("change", function() {
             statusFilter = $(this).val();
             renderTable(listData);
+        });
+
+        $("#refreshBtn").on("click", async function() {
+            $(this).attr("disabled", true);
+            $("#refreshSpinner").show();
+            await initTable();
+            $(this).attr("disabled", false);
+            $("#refreshSpinner").hide();
         });
 
         // by xuanzhi33
