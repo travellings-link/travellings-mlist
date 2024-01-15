@@ -79,6 +79,16 @@
         let listData = null;
         let userRole = "访客";
 
+        let jsonPost = (url, data) => {
+            return $.ajax({
+                url,
+                type: "POST",
+                data: JSON.stringify(data),
+                contentType: "application/json",
+                dataType: "json"
+            });
+        }
+
         let renderTable = data => {
             let html = '';
             for (let i = 0; i < data.length; i++) {
@@ -144,9 +154,7 @@
             }
             let res = null;
             try {
-                res = await $.post(`https://api.travellings.cn/action/del?token=${localStorage.tlogin}`, JSON.stringify({
-                    id
-                }));
+                res = await jsonPost(`https://api.travellings.cn/action/del?token=${localStorage.tlogin}`, { id });
             } catch (error) {
                 alert(error.responseJSON.msg);
                 return;

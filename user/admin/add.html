@@ -45,6 +45,16 @@
     </div>
     <script src="https://unpkg.zhimg.com/jquery@3/dist/jquery.min.js"></script>
     <script>
+        let jsonPost = (url, data) => {
+            return $.ajax({
+                url,
+                type: "POST",
+                data: JSON.stringify(data),
+                contentType: "application/json",
+                dataType: "json"
+            });
+        }
+
         let showInfo = msg => {
             $('#info').text(msg).slideDown();
             setTimeout(() => {
@@ -80,12 +90,12 @@
             let res = null;
 
             try {
-                res = await $.post(`https://api.travellings.cn/action/add?token=${localStorage.tlogin}`, JSON.stringify({
+                res = await jsonPost(`https://api.travellings.cn/action/add?token=${localStorage.tlogin}`, {
                     name,
                     link,
                     tag,
                     status
-                }));
+                });
             } catch (error) {
                 showInfo(error.responseJSON.msg);
                 hideSpinner();
