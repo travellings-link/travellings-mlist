@@ -78,6 +78,14 @@
                     </tr>
                 </tbody>
             </table>
+            <div class="text-center">
+                <a href="https://beian.miit.gov.cn/" target="_blank">闽ICP备2023011626号-1</a> |
+                <a target="_blank"
+                    href="http://www.beian.gov.cn/portal/registerSystemInfo?recordcode=35059102000048">闽公网安备35059102000048号</a> |
+                Frontend by <a href="https://github.com/xuanzhi33">@xuanzhi33</a> |
+                Backend by <a href="https://github.com/BLxcwg666">@BLxcwg666</a> |
+                <a href="https://github.com/travellings-link/travellings-mlist" target="_blank"><i class="fa fa-github"></i> 源代码</a>
+            </div>
         </div>
     </div>
     <script src="https://unpkg.zhimg.com/jquery@3/dist/jquery.min.js"></script>
@@ -125,8 +133,8 @@
 
                 html += `
                     <tr>
-                        <td title="${status}">${data[i].id}${statusHTML}</td>
-                        <td>${data[i].name}</td>
+                        <td title="${status}">${data[i].id}</td>
+                        <td>${data[i].name}${statusHTML}</td>
                         <td><a href="${data[i].url}" target="_blank">${displayUrl}</a></td>
                         <td class="pcOnly">${data[i].status}</td>
                         <td class="pcOnly">${data[i].tag}</td>
@@ -137,6 +145,18 @@
                     </tr>
                 `;
             }
+
+            if (data.length == 0) {
+                html = `
+                    <tr>
+                        <td colspan="6" class="text-center">
+                            <i class="fa fa-minus-circle"></i>
+                            暂无数据
+                        </td>
+                    </tr>
+                `;
+            }
+
             $('#mlist').html(html);
 
             if (userRole == "管理员") {
