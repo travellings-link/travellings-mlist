@@ -84,7 +84,7 @@
                         <td class="pcOnly">${data[i].status}</td>
                         <td class="pcOnly">${data[i].tag}</td>
                         <td class="adminOnly">
-                            <!--编辑功能仍在调试中 <a href="./user/admin/edit.html?id=${data[i].id}"><i class="fa fa-edit"></i></a>-->
+                            <a href="./user/admin/edit.html?id=${data[i].id}"><i class="fa fa-edit"></i></a>
                             <a href="javascript:;" onclick="del(${data[i].id})"><i class="fa fa-trash"></i></a>
                         </td>
                     </tr>
@@ -125,9 +125,14 @@
             if (!confirm('确定要删除id为' + id + '的网站吗？')) {
                 return;
             }
-            let res = await $.post("https://api.travellings.cn/action/del", {
-                id
-            });
+            let res = null;
+            try {
+                res = await $.post("https://api.travellings.cn/action/del", {id});
+            } catch (error) {
+                alert(error.responseJSON.msg);
+                return;
+            }
+           
             if (res.success) {
                 alert(res.msg);
                 initTable();
