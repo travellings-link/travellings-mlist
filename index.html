@@ -98,21 +98,23 @@
                 let status = data[i].status;
                 if (status == "LOST") {
                     idColor = "warning";
-                    statusIcon = ` <i class="fa fa-exclamation-triangle"></i>`;
+                    statusIcon = `exclamation-triangle`;
                 } else if (status == "WAIT") {
                     idColor = "info";
-                    statusIcon = ` <i class="fa fa-clock-o"></i>`;
+                    statusIcon = `clock-o`;
                 } else if (status == "RUN") {
                     idColor = "success";
-                    statusIcon = ` <i class="fa fa-check-circle"></i>`;
+                    statusIcon = `check-circle`;
                 } else {
                     idColor = "danger";
-                    statusIcon = ` <i class="fa fa-times-circle"></i>`;
+                    statusIcon = `times-circle`;
                 }
+
+                let statusHTML = ` <i class="fa fa-${statusIcon} text-${idColor}"></i>`;
 
                 html += `
                     <tr>
-                        <td class="text-${idColor}" title="${status}">${data[i].id}${statusIcon}</td>
+                        <td title="${status}">${data[i].id}${statusHTML}</td>
                         <td>${data[i].name}</td>
                         <td><a href="${data[i].url}" target="_blank">${displayUrl}</a></td>
                         <td class="pcOnly">${data[i].status}</td>
