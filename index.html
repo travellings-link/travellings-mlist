@@ -52,9 +52,22 @@
                 <select class="btn btn-info mb-1" id="statusFilter">
                     <option value="ALL">全部站点</option>
                     <option value="RUN">RUN</option>
+                    <option value="OTHER">非 RUN</option>
                     <option value="LOST">LOST</option>
                     <option value="ERROR">ERROR</option>
+                    <option value="TIMEOUT">TIMEOUT</option>
                     <option value="WAIT">WAIT</option>
+                    <option value="400">400</option>
+                    <option value="403">403</option>
+                    <option value="404">404</option>
+                    <option value="405">405</option>
+                    <option value="418">418</option>
+                    <option value="429">429</option>
+                    <option value="500">500</option>
+                    <option value="501">501</option>
+                    <option value="502">502</option>
+                    <option value="503">503</option>
+                    <option value="504">504</option>
                 </select>
                 <span class="adminOnly">
                     <a class="btn btn-success mb-1" href="./user/admin/add.html"><i class="fa fa-plus"></i> 新增网站</a>
@@ -109,7 +122,11 @@
 
         let renderTable = data => {
             if (statusFilter != "ALL") {
-                data = data.filter(item => item.status == statusFilter);
+                if (statusFilter != "OTHER") {
+                    data = data.filter(item => item.status == statusFilter);
+                } else {
+                    data = data.filter(item => item.status != "RUN");
+                }
             }
 
             let html = '';
@@ -234,8 +251,12 @@
             if (data.role == 0) { // 管理员
                 $(".adminOnly").fadeIn();
                 userRole = "管理员";
-            } else { // 普通用户
+            } else if (data.role == 1) { // 普通用户
                 $(".guestUserOnly").fadeIn();
+            } else { // 登录失效
+                localStorage.removeItem("tlogin");
+                alert("您的登录态已失效，请重新登录");
+                location.reload();
             }
 
             $(".username").text(username);          
