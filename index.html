@@ -56,18 +56,9 @@
                     <option value="LOST">LOST</option>
                     <option value="ERROR">ERROR</option>
                     <option value="TIMEOUT">TIMEOUT</option>
+                    <option value="4XX">4XX</option>
+                    <option value="5XX">5XX</option>
                     <option value="WAIT">WAIT</option>
-                    <option value="400">400</option>
-                    <option value="403">403</option>
-                    <option value="404">404</option>
-                    <option value="405">405</option>
-                    <option value="418">418</option>
-                    <option value="429">429</option>
-                    <option value="500">500</option>
-                    <option value="501">501</option>
-                    <option value="502">502</option>
-                    <option value="503">503</option>
-                    <option value="504">504</option>
                 </select>
                 <span class="adminOnly">
                     <a class="btn btn-success mb-1" href="./user/admin/add.html"><i class="fa fa-plus"></i> 新增网站</a>
@@ -121,11 +112,15 @@
         }
 
         let renderTable = data => {
-            if (statusFilter != "ALL") {
-                if (statusFilter != "OTHER") {
-                    data = data.filter(item => item.status == statusFilter);
-                } else {
+            if (statusFilter != "ALL") { // 启用过滤器
+                if (statusFilter == "OTHER") { // 非 RUN
                     data = data.filter(item => item.status != "RUN");
+                } else if (statusFilter == "4XX") { // begin with 4
+                    data = data.filter(item => item.status.startsWith("4"));
+                } else if (statusFilter == "5XX") { // begin with 5
+                    data = data.filter(item => item.status.startsWith("5"));
+                } else { // 其他
+                    data = data.filter(item => item.status == statusFilter);
                 }
             }
 
