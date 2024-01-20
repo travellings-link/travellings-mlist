@@ -28,6 +28,10 @@
                     </tr>
                 </tbody>
             </table>
+            <button class="btn btn-success" id="addAll">
+                <span class="spinner-border spinner-border-sm" style="display: none;" id="addSpinner"></span>
+                一键添加
+            </button>
         </div>
 
 
@@ -113,6 +117,16 @@
         }
 
         getIssues();
+
+        $("#addAll").click(async () => {
+            $("#addAll").attr("disabled", true);
+            $("#addSpinner").show();
+            for (let i = 0; i < websites.length; i++) {
+                await addWebsite(i);
+            }
+            $("#addAll").attr("disabled", false);
+            $("#addSpinner").hide();
+        });
     </script>
 </body>
 
