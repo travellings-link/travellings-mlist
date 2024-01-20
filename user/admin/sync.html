@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>一键添加 | 开往</title>
+    <link href="https://unpkg.zhimg.com/bootstrap@4.4.1/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="/css/style.css">
+</head>
+
+<body>
+    <div class="container mt-4 mb-4">
+        <div class="main p-3">
+            <h3>一键添加</h3>
+            <div class="alert alert-primary" style="display: none;" id="info"></div>
+            <div>以下为包含 “审核通过” Tag 的 <strong>OPEN</strong> Issues</div>
+            <table class="table mt-3">
+                <thead>
+                    <th>ID</th>
+                    <th>网站名称</th>
+                    <th>网站链接</th>
+                    <th>操作</th>
+                </thead>
+                <tbody id="websites">
+                    <tr>
+                        <td><span class="spinner-border"></span></td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+
+    </div>
+    <script src="https://unpkg.zhimg.com/jquery@3/dist/jquery.min.js"></script>
+    <script>
+        if (!localStorage.tlogin) {
+            alert("您尚未登录，点击确定后跳转至登录页面。");
+            location.href = "../";
+        }
+
+        let jsonPost = (url, data) => {
+            return $.ajax({
+                url,
+                type: "POST",
+                data: JSON.stringify(data),
+                contentType: "application/json",
+                dataType: "json"
+            });
+        }
+
+        let showInfo = msg => {
+            $('#info').text(msg).slideDown();
+            setTimeout(() => {
+                $('#info').slideUp();
+            }, 3000);
+        }
+
+
+        let websites = null;
+        let addWebsite = async index => {
+            let thisBtn = $(".addBtn").eq(index);
+            thisBtn.attr("disabled", true);
+            thisBtn.text("添加中...");
+
+            let website = websites[index];
+            let name = website.websiteName;
+            let link = website.websiteLink;
+            let tag = "go";
+            let status = "RUN";
+
+            let res = null;
+            try {
+                res = await jsonPost(`https://api.travellings.cn/action/add?token=${localStorage.tlogin}`, {
+                    name,
+                    link,
+                    tag,
+                    status
+                });
+            } catch (error) {
+                showInfo(error.responseJSON.msg);
+                return;
+            }
+            
+            showInfo(res.msg);
+            thisBtn.text("添加");
+        }
+
+        let getIssues = async () => {
+
+            let res = await $.getJSON("https://api.github.com/repos/travellings-link/travellings/issues?labels=审核通过");
+            let html = "";
+            websites = [];
+            for (let i = 0; i < res.length; i++) {
+                let body = res[i].body;
+                let websiteData = body.split("\n");
+                let websiteName = websiteData[2];
+                let websiteLink = websiteData[6];
+                let issuesID = res[i].number;
+                let issuesLink = res[i].html_url;
+                websites.push({
+                    websiteName,
+                    websiteLink
+                });
+                html += `<tr>
+                            <td><a href="${issuesLink}" target="_blank">#${issuesID}</a></td>
+                            <td>${websiteName}</td>
+                            <td><a href="${websiteLink}" target="_blank">${websiteLink}</a></td>
+                            <td><button class="btn btn-success btn-sm addBtn" onclick="addWebsite('${i}')">添加</button></td>
+                        </tr>`;
+            }
+            $("#websites").html(html);
+        }
+
+        getIssues();
+    </script>
+</body>
+
+</html>
