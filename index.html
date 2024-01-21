@@ -69,6 +69,9 @@
                     <a class="btn btn-light mb-1" href="javascript:;" onclick="logout()"><i class="fa fa-sign-out"></i> <span class="username"></span> (普通用户)</a>
                 </span>
             </div>
+
+            <div class="text-center mt-3 page-nav"></div>
+
             <table class="table mt-3">
                 <thead>
                     <tr>
@@ -89,7 +92,8 @@
                     </tr>
                 </tbody>
             </table>
-            <div class="text-center">
+            <div class="text-center page-nav"></div>
+            <div class="text-center mt-3">
                 <a href="https://beian.miit.gov.cn/" target="_blank">闽ICP备2023011626号-1</a> |
                 <a target="_blank"
                     href="http://www.beian.gov.cn/portal/registerSystemInfo?recordcode=35059102000048">闽公网安备35059102000048号</a> |
@@ -104,6 +108,71 @@
         let listData = null;
         let userRole = "访客";
         let statusFilter = "ALL";
+        let curPage = 1;
+        let curData = null;
+        let pageNum = 0;
+
+        const pageSize = 100;
+
+        let filterCurPage = data => {
+            updatePageNav(data.length);
+            let start = (curPage - 1) * pageSize;
+            let end = start + pageSize;
+            return data.slice(start, end);
+        }
+
+        let updatePageNav = total => {
+            let pageBtn = (i) => {
+                if (i == 0) {
+                    return `<button class="btn btn-light" disabled>...</button>`;
+                } else if (curPage == i) {
+                    return `<button class="btn btn-primary">${i}</button>`;
+                } else {
+                    return `<button class="btn btn-light" onclick="gotoPage(${i})">${i}</button>`;
+                }
+            }
+
+            pageNum = Math.ceil(total / pageSize);
+            let pageNav = $('.page-nav');
+
+            if (pageNum <= 1) {
+                pageNav.html(''); // 清空
+                return;
+            }
+
+            let html = `<div class="btn-group">`;
+
+            html += pageBtn(1); // 首页
+
+            let startPage = Math.max(2, curPage - 2);
+            let endPage = Math.min(pageNum - 1, curPage + 2);
+
+            if (startPage > 2) html += pageBtn(0);
+
+            for (let i = startPage; i <= endPage; i++) {
+                html += pageBtn(i);
+            }
+
+            if (endPage < pageNum - 1) html += pageBtn(0);
+            
+            html += pageBtn(pageNum); // 尾页
+
+            html += `</div><br>
+            <div class="btn-group mt-1">`;
+            // 上一页
+            html += `<button class="btn btn-light" onclick="gotoPage(${curPage - 1})">
+                <i class="fa fa-chevron-left"></i> 上一页
+                </button>`;
+            // 跳转按钮
+            html += `<button class="btn btn-light" onclick="jumpTo()">${curPage} / ${pageNum}</button>`;
+            
+            // 下一页
+            html += `<button class="btn btn-light" onclick="gotoPage(${curPage + 1})">
+                下一页 <i class="fa fa-chevron-right"></i>
+                </button>`;
+            html += `</div>`;
+            pageNav.html(html);
+        }
 
         let jsonPost = (url, data) => {
             return $.ajax({
@@ -116,6 +185,29 @@
         }
 
         let renderTable = data => {
+            curData = data;
+            curPage = 1;
+            displayTable();
+        }
+
+        let gotoPage = p => {
+            if (p < 1) return;
+            if (p > pageNum) return;
+            curPage = p;
+            displayTable();
+        }
+
+        let jumpTo = () => {
+            let total = pageNum;
+            let p = prompt(`请输入要跳转的页码 (1-${total})`);
+            let pageInt = parseInt(p);
+            if (isNaN(pageInt)) return;
+            gotoPage(pageInt);
+        }
+
+        let displayTable = () => {
+            let data = curData;
+
             if (statusFilter != "ALL") { // 启用过滤器
                 if (statusFilter == "OTHER") { // 非 RUN
                     data = data.filter(item => item.status != "RUN");
@@ -127,6 +219,8 @@
                     data = data.filter(item => item.status == statusFilter);
                 }
             }
+
+            data = filterCurPage(data);
 
             let html = '';
             for (let i = 0; i < data.length; i++) {
