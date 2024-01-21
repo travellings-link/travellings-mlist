@@ -93,12 +93,12 @@
             let res = null;
 
             try {
-                res = await jsonPost(`https://api.travellings.cn/action/add?token=${localStorage.tlogin}`, {
+                res = await jsonPost(`https://api.travellings.cn/action/add?token=${localStorage.tlogin}`, [{
                     name,
                     link,
                     tag,
                     status
-                });
+                }]);
             } catch (error) {
                 showInfo(error.responseJSON.msg);
                 hideSpinner();

@@ -68,26 +68,17 @@
             thisBtn.text("添加中...");
 
             let website = websites[index];
-            let name = website.websiteName;
-            let link = website.websiteLink;
-            let tag = "go";
-            let status = "RUN";
 
             let res = null;
             try {
-                res = await jsonPost(`https://api.travellings.cn/action/add?token=${localStorage.tlogin}`, {
-                    name,
-                    link,
-                    tag,
-                    status
-                });
+                res = await jsonPost(`https://api.travellings.cn/action/add?token=${localStorage.tlogin}`, [website]);
             } catch (error) {
                 showInfo(error.responseJSON.msg);
                 return;
             }
             
             showInfo(res.msg);
-            thisBtn.text("添加");
+            thisBtn.fadeOut();
         }
 
         let getIssues = async () => {
@@ -103,14 +94,17 @@
                 let issuesID = res[i].number;
                 let issuesLink = res[i].html_url;
                 websites.push({
-                    websiteName,
-                    websiteLink
+                    name: websiteName,
+                    link: websiteLink,
+                    status: "RUN",
+                    tag: "go"
                 });
+
                 html += `<tr>
                             <td><a href="${issuesLink}" target="_blank">#${issuesID}</a></td>
                             <td>${websiteName}</td>
                             <td><a href="${websiteLink}" target="_blank">${websiteLink}</a></td>
-                            <td><button class="btn btn-success btn-sm addBtn" onclick="addWebsite('${i}')">添加</button></td>
+                            <td><button class="btn btn-success btn-sm addBtn" onclick="addWebsite(${i})">添加</button></td>
                         </tr>`;
             }
             $("#websites").html(html);
@@ -121,9 +115,17 @@
         $("#addAll").click(async () => {
             $("#addAll").attr("disabled", true);
             $("#addSpinner").show();
-            for (let i = 0; i < websites.length; i++) {
-                await addWebsite(i);
+            
+            let res = null;
+            try {
+                res = await jsonPost(`https://api.travellings.cn/action/add?token=${localStorage.tlogin}`, websites);
+            } catch (error) {
+                showInfo(error.responseJSON.msg);
+                return;
             }
+            
+            showInfo(res.msg);
+
             $("#addAll").attr("disabled", false);
             $("#addSpinner").hide();
         });
