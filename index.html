@@ -242,14 +242,20 @@
                     statusIcon = `times-circle`;
                 }
 
-                let statusHTML = ` <i class="fa fa-${statusIcon} text-${idColor}"></i>`;
+                let failedReason = data[i].failedReason;
+                let failedReasonHTML = "";
+                if (failedReason) {
+                    failedReasonHTML = ` title="${failedReason}"`;
+                }
+
+                let statusHTML = ` <i class="fa fa-${statusIcon} text-${idColor}"${failedReasonHTML}></i>`;
 
                 html += `
                     <tr>
                         <td title="${status}">${data[i].id}</td>
                         <td>${data[i].name}${statusHTML}</td>
                         <td><a href="${data[i].url}" target="_blank">${displayUrl}</a></td>
-                        <td class="pcOnly">${data[i].status}</td>
+                        <td class="pcOnly"${failedReasonHTML}>${data[i].status}</td>
                         <td class="pcOnly">${data[i].tag}</td>
                         <td class="adminOnly">
                             <a href="./user/admin/edit.html?id=${data[i].id}"><i class="fa fa-edit"></i></a>
