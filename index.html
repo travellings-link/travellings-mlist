@@ -102,6 +102,8 @@
         </div>
     </div>
     <script src="https://unpkg.zhimg.com/jquery@3/dist/jquery.min.js"></script>
+    <script src="https://cdn.staticfile.org/popper.js/1.16.1/umd/popper.min.js"></script>	
+	<script src="https://unpkg.zhimg.com/bootstrap@4.4.1/dist/js/bootstrap.min.js"></script>
     <script>
         let listData = null;
         let userRole = "访客";
@@ -243,7 +245,7 @@
                 let failedReason = data[i].failedReason;
                 let failedReasonHTML = "";
                 if (failedReason) {
-                    failedReasonHTML = ` title="${failedReason}"`;
+                    failedReasonHTML = ` data-toggle="tooltip" title="${failedReason}"`;
                 }
 
                 let statusHTML = ` <i class="fa fa-${statusIcon} text-${idColor}"${failedReasonHTML}></i>`;
@@ -253,7 +255,7 @@
                         <td title="${status}">${data[i].id}</td>
                         <td>${data[i].name}${statusHTML}</td>
                         <td><a href="${data[i].url}" target="_blank">${displayUrl}</a></td>
-                        <td class="pcOnly"${failedReasonHTML}>${data[i].status}</td>
+                        <td class="pcOnly"><span${failedReasonHTML}>${data[i].status}</span></td>
                         <td class="pcOnly">${data[i].tag}</td>
                         <td class="adminOnly">
                             <a href="./user/admin/edit.html?id=${data[i].id}"><i class="fa fa-edit"></i></a>
@@ -275,6 +277,8 @@
             }
 
             $('#mlist').html(html);
+
+            $('[data-toggle="tooltip"]').tooltip();
 
             if (userRole == "管理员") {
                 $(".adminOnly").show();
