@@ -32,8 +32,8 @@
                 <span class="spinner-border spinner-border-sm" style="display: none;" id="addSpinner"></span>
                 一键添加
             </button>
-            <button class="btn btn-secondary" id="refreshBtn">
-                <span class="spinner-border spinner-border-sm" style="display: none;" id="refreshSpinner"></span>
+            <button class="btn btn-secondary" id="refreshBtn" disabled>
+                <span class="spinner-border spinner-border-sm" id="refreshSpinner"></span>
                 刷新数据
             </button>
             <a href="../../" class="btn btn-secondary">返回列表</a>
@@ -87,8 +87,9 @@
         }
 
         let getIssues = async () => {
+            let timestamp = new Date().getTime();
 
-            let res = await $.getJSON("https://api.github.com/repos/travellings-link/travellings/issues?labels=审核通过");
+            let res = await $.getJSON("https://api.github.com/repos/travellings-link/travellings/issues?labels=审核通过&_t=" + timestamp);
             let html = "";
             websites = [];
             for (let i = 0; i < res.length; i++) {
@@ -113,6 +114,9 @@
                         </tr>`;
             }
             $("#websites").html(html);
+
+            $("#refreshBtn").attr("disabled", false);
+            $("#refreshSpinner").hide();
         }
 
         getIssues();
@@ -143,8 +147,6 @@
             $("#refreshBtn").attr("disabled", true);
             $("#refreshSpinner").show();
             await getIssues();
-            $("#refreshBtn").attr("disabled", false);
-            $("#refreshSpinner").hide();
         });
     </script>
 </body>
