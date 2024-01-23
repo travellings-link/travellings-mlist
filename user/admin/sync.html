@@ -32,6 +32,11 @@
                 <span class="spinner-border spinner-border-sm" style="display: none;" id="addSpinner"></span>
                 一键添加
             </button>
+            <button class="btn btn-secondary" id="refreshBtn">
+                <span class="spinner-border spinner-border-sm" style="display: none;" id="refreshSpinner"></span>
+                刷新数据
+            </button>
+            <a href="../../" class="btn btn-secondary">返回列表</a>
         </div>
 
 
@@ -116,6 +121,9 @@
             $("#addAll").attr("disabled", true);
             $("#addSpinner").show();
             
+            $(".addBtn").attr("disabled", true);
+            $(".addBtn").text("添加中...");
+
             let res = null;
             try {
                 res = await jsonPost(`https://api.travellings.cn/action/add?token=${localStorage.tlogin}`, websites);
@@ -128,6 +136,15 @@
 
             $("#addAll").attr("disabled", false);
             $("#addSpinner").hide();
+            $(".addBtn").fadeOut();
+        });
+
+        $("#refreshBtn").click(async () => {
+            $("#refreshBtn").attr("disabled", true);
+            $("#refreshSpinner").show();
+            await getIssues();
+            $("#refreshBtn").attr("disabled", false);
+            $("#refreshSpinner").hide();
         });
     </script>
 </body>
