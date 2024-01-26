@@ -49,7 +49,7 @@
                 <button class="btn btn-secondary mb-1" id="refreshBtn"><i class="fa fa-refresh"></i> 刷新数据
                     <span class="spinner-border spinner-border-sm" style="display: none;" id="refreshSpinner"></span>
                 </button>
-                <select class="btn btn-info mb-1" id="statusFilter">
+                <select class="btn btn-info mb-1" id="statusFilter" data-toggle="tooltip" title="筛选指定状态的网站，搜索结果也会被筛选">
                     <option value="ALL">全部站点</option>
                     <option value="RUN">RUN</option>
                     <option value="OTHER">非 RUN</option>
@@ -63,10 +63,10 @@
                 <span class="adminOnly">
                     <a class="btn btn-success mb-1" href="./user/admin/add.html" target="_blank"><i class="fa fa-plus"></i> 新增网站</a>
                     <a class="btn btn-success mb-1" href="./user/admin/sync.html" target="_blank"><i class="fa fa-check-square-o"></i> 一键添加</a>
-                    <a class="btn btn-light mb-1" href="javascript:;" onclick="logout()"><i class="fa fa-sign-out"></i> <span class="username"></span> (管理员)</a>
+                    <a class="btn btn-light mb-1" data-toggle="tooltip" title="点击退出登录" href="javascript:;" onclick="logout()"><i class="fa fa-user"></i> <span class="username"></span> (管理员)</a>
                 </span>
                 <span class="guestUserOnly" style="display: none;">
-                    <a class="btn btn-light mb-1" href="javascript:;" onclick="logout()"><i class="fa fa-sign-out"></i> <span class="username"></span> (普通用户)</a>
+                    <a class="btn btn-light mb-1" data-toggle="tooltip" title="点击退出登录" href="javascript:;" onclick="logout()"><i class="fa fa-user"></i> <span class="username"></span> (普通用户)</a>
                 </span>
             </div>
 
@@ -76,7 +76,7 @@
                         <th>ID</th>
                         <th>站点名称</th>
                         <th>站点链接</th>
-                        <th class="pcOnly">状态</th> 
+                        <th class="pcOnly" data-toggle="tooltip" title="具体含义详见官网“疑难解答”，鼠标悬停可查看部分错误信息">状态</th> 
                         <th class="pcOnly">TAG</th> 
                         <th class="adminOnly">操作</th>
                     </tr>
@@ -252,14 +252,14 @@
 
                 html += `
                     <tr>
-                        <td title="${status}">${data[i].id}</td>
+                        <td data-toggle="tooltip" title="${status}">${data[i].id}</td>
                         <td>${data[i].name}${statusHTML}</td>
                         <td><a href="${data[i].url}" target="_blank">${displayUrl}</a></td>
                         <td class="pcOnly"><span${failedReasonHTML}>${data[i].status}</span></td>
                         <td class="pcOnly">${data[i].tag}</td>
                         <td class="adminOnly">
-                            <a href="./user/admin/edit.html?id=${data[i].id}"><i class="fa fa-edit"></i></a>
-                            <a href="javascript:;" onclick="del(${data[i].id})"><i class="fa fa-trash"></i></a>
+                            <a href="./user/admin/edit.html?id=${data[i].id}" data-toggle="tooltip" title="编辑"><i class="fa fa-edit"></i></a>
+                            <a href="javascript:;" onclick="del(${data[i].id})" data-toggle="tooltip" title="删除"><i class="fa fa-trash"></i></a>
                         </td>
                     </tr>
                 `;
