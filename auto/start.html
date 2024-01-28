@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>开往 - 友链接力</title>
+    <link href="https://unpkg.zhimg.com/bootstrap@4.4.1/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.staticfile.org/font-awesome/4.7.0/css/font-awesome.min.css">
+    <link rel="stylesheet" href="/css/style.css">
+    <style>
+        #intro {
+            line-height: 2;
+            font-size: 20px;
+        }
+        #startBtn {
+            transition: all 1s;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container mt-4 mb-4">
+        <div class="main p-3">
+            <h1><strong>开往</strong> - 友链接力</h1>
+            <div id="intro">
+                开往的生日是 <strong>2020年3月12日</strong>，取自<strong>开</strong>放的<strong>网</strong>络，是一个友链接力项目。
+
+                开往的logo是代表“世界”的星环 + 代表“穿梭”的列车 —— 相信你听到“开往”这个词最多的时候一定是在列车上，“由 xx 开往 xx 的列车……”。<br>
+
+                每当有人访问加入开往的网页时，点击“开往“会<strong>随机跳转</strong>到另一个加入开往的网页。之后，再次点击网页上的”开往“或后退网页，将继续随机跳转到另一个加入开往的网页。<br>
+
+                加入开往的网页越多，友链接力的规模越大，分享流量的规模也越大。<br>
+
+                想获取更多信息或申请加入，请前往官网：www.travellings.cn
+                <img width="150px" id="startBtn" src="https://www.travellings.cn/assets/logo.svg" alt="logo">
+            </div>
+        </div>
+    </div>
+    <script src="https://unpkg.zhimg.com/jquery@3/dist/jquery.min.js"></script>
+    <script>
+        let sleep = async time => {
+            return new Promise(resolve => {
+                setTimeout(() => {
+                    resolve();
+                }, time);
+            });
+        };
+        $("#startBtn").click(async () => {
+            for (let i = 0; i < 10; i++) {
+                $("#startBtn").css("transform", "translateX(" + i * 50 + "px)");
+                await sleep(1000);
+            }
+            window.opener.postMessage("start", "*");
+        });
+        
+    </script>
+</body>
+
+</html>
