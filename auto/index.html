@@ -47,7 +47,9 @@
 <body>
 
     <div class="m-3">
-        <div class="tips">请先<a href="javascript:;" id="startBtn">点我打开弹出窗口</a>。接下来调整本页面的大小和位置使得弹出窗口完全遮住此区域。最后请点击弹出窗口左下方的“Travelling”徽标，自动跳转将在10秒后开始。</div>
+        <div class="tips">请先<a href="javascript:;" id="startBtn">点我打开弹出窗口</a>。接下来调整本页面的大小和位置使得弹出窗口完全遮住此区域。最后请点击弹出窗口左下方的“Travelling”徽标，自动跳转将在10秒后开始。
+        <a href="javascript:;" id="skip">点击设置跳过的网站。</a>
+        </div>
         <div class="row">
             <div class="col-4">
                 <h3 id="name">开往</h1>
@@ -63,6 +65,7 @@
     <div id="progBar" style="width: 0%;"></div>
     <script src="https://unpkg.zhimg.com/jquery@3/dist/jquery.min.js"></script>
     <script>
+        let skip = 0;
         let sleep = async time => {
             return new Promise(resolve => {
                 setTimeout(() => {
@@ -88,6 +91,12 @@
         let startTravelling = async () => {
             let data = await $.getJSON("https://api.travellings.cn/all?status=RUN");
             let websites = data.data;
+
+            // 去除跳过的网站
+            websites = websites.filter(website => {
+                return website.id > skip;
+            });
+            
             for (let i = 0; i < websites.length; i++) {
                 let url = websites[i].url;
                 let name = websites[i].name;
@@ -109,6 +118,14 @@
             let data = e.originalEvent.data;
             if (data == "start") {
                 startTravelling();
+            }
+        });
+
+        $("#skip").click(() => {
+            let id = prompt("请输入网站ID，将跳过这个网站及之前的所有网站");
+            id = parseInt(id);
+            if (!isNaN(id)) {
+                skip = id;
             }
         });
     </script>
