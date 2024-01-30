@@ -24,6 +24,9 @@ body::before {
 }
 
 @media (prefers-color-scheme: dark) {
+    body {
+        background-color: black;
+    }
     body::before {
         filter: invert(1) hue-rotate(180deg);
     }
