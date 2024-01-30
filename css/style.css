@@ -18,3 +18,44 @@ body::before {
     -webkit-backdrop-filter: blur(7px);
     border-radius: 0.375rem;
 }
+
+:root {
+    color-scheme: light dark;
+}
+
+@media (prefers-color-scheme: dark) {
+    body::before {
+        filter: invert(1) hue-rotate(180deg);
+    }
+    .main {
+        background-color: #111111aa;
+    }
+    body, .table{
+        color: #eee;
+    }
+    .form-control, .form-control:focus {
+        background-color: #333;
+        color: #eee;
+    }
+
+    .table td, .table th {
+        border-top: 1px solid #333;
+    }
+    .table thead th {
+        border-bottom: 2px solid #333;
+    }
+
+    .btn-light {
+        background-color: #ccc;
+        border-color: #ccc;
+    }
+
+    a {
+        color: #a2c1e2;
+    }
+
+    a:hover {
+        color: #51a4fe;
+    }
+
+}
