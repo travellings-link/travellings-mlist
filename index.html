@@ -263,13 +263,20 @@
 
                 let statusHTML = ` <i class="fa fa-${statusIcon} text-${idColor}"${failedReasonHTML}></i>`;
 
+                let tags = data[i].tag.split(",");
+                let tagHTML = "";
+                for (let j = 0; j < tags.length; j++) {
+
+                    tagHTML += `<span class="badge badge-secondary">${tags[j]}</span>`;
+                }
+
                 html += `
                     <tr>
                         <td data-toggle="tooltip" title="${status}">${data[i].id}</td>
                         <td>${data[i].name}${statusHTML}</td>
                         <td><a href="${data[i].url}" target="_blank">${displayUrl}</a></td>
                         <td class="pcOnly"><span${failedReasonHTML}>${data[i].status}</span></td>
-                        <td class="pcOnly">${data[i].tag}</td>
+                        <td class="pcOnly">${tagHTML}</td>
                         <td class="adminOnly">
                             <a href="./user/admin/edit.html?id=${data[i].id}" data-toggle="tooltip" title="编辑"><i class="fa fa-edit"></i></a>
                             <a href="javascript:;" onclick="del(${data[i].id})" data-toggle="tooltip" title="删除"><i class="fa fa-trash"></i></a>
@@ -396,6 +403,11 @@
 
         $("#statusFilter").on("change", function() {
             statusFilter = $(this).val();
+            renderTable(listData);
+        });
+
+        $("#tagFilter").on("change", function() {
+            tagFilter = $(this).val();
             renderTable(listData);
         });
 
