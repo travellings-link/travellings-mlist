@@ -505,8 +505,8 @@
             $("#spinner").hide();
         }
 
-        let getOriginalData = async () => {
-            let websiteId = getWebsiteIdFromURL(); // 获取网站id
+        let getOriginalData = async id => {
+            let websiteId = id;
             let res = null;
             try {
                 res = await $.getJSON(`https://api.travellings.cn/action/${websiteId}?token=${localStorage.tlogin}`);
@@ -527,8 +527,8 @@
             $('#status').val(status);
         }
 
-        let update = async () => {
-            let id = getWebsiteIdFromURL(); // 获取网站id
+        let update = async id => {
+            let id = $('#siteID').text();
             let name = $('#websiteName').val();
             let link = $('#websiteLink').val();
             let tag = $('#tag').val();
@@ -555,7 +555,7 @@
 
         let editItem = async id => {
             $('#siteID').text(id);
-            await getOriginalData();
+            await getOriginalData(id);
             $('#editItem').modal('show');
         }
 
