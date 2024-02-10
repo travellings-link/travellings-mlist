@@ -265,9 +265,18 @@
 
                 let tags = data[i].tag.split(",");
                 let tagHTML = "";
+                const tagColor = {
+                    "go": "primary",
+                    "blog": "success",
+                    "normal": "secondary",
+                    "coder": "info",
+                    "site": "warning",
+                    "life": "danger",
+                    "hybrid": "dark"
+                }
                 for (let j = 0; j < tags.length; j++) {
-
-                    tagHTML += `<span class="badge badge-secondary">${tags[j]}</span>`;
+                    let thisColor = tagColor[tags[j]] || "secondary";
+                    tagHTML += `<span class="badge badge-${thisColor}">${tags[j]}</span> `;
                 }
 
                 html += `
