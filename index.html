@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html>
+<html lang="zh">
 
 <head>
     <meta charset="UTF-8">
@@ -59,6 +59,15 @@
                     <option value="4XX">4XX</option>
                     <option value="5XX">5XX</option>
                     <option value="WAIT">WAIT</option>
+                </select>
+                <select class="btn btn-info mb-1" id="tagFilter" data-toggle="tooltip" title="筛选指定标签的网站，搜索结果也会被筛选">
+                    <option value="go">全部站点</option>
+                    <option value="blog">博客网站</option>
+                    <option value="normal">杂项</option>
+                    <option value="coder">技术类网站（博客或维基）</option>
+                    <option value="site">网站分享类博客</option>
+                    <option value="life">生活类博客</option>
+                    <option value="hybrid">综合类博客</option>
                 </select>
                 <span class="adminOnly">
                     <a class="btn btn-success mb-1" href="./user/admin/add.html" target="_blank"><i class="fa fa-plus"></i> 新增网站</a>
@@ -218,6 +227,10 @@
                 } else { // 其他
                     data = data.filter(item => item.status == statusFilter);
                 }
+            }
+
+            if (tagFilter != "go") { // 启用过滤器
+                data = data.filter(item => item.tag.includes(tagFilter));
             }
 
             data = filterCurPage(data);
