@@ -252,9 +252,9 @@
             });
         }
 
-        let renderTable = data => {
+        let renderTable = (data, backToFirstPage = true) => {
             curData = data;
-            curPage = 1;
+            if (backToFirstPage) curPage = 1;
             displayTable();
         }
 
@@ -346,7 +346,7 @@
                         <td class="pcOnly"><span${failedReasonHTML}>${data[i].status}</span></td>
                         <td class="pcOnly">${tagHTML}</td>
                         <td class="adminOnly">
-                            <a href="./user/admin/edit.html?id=${data[i].id}" data-toggle="tooltip" title="编辑"><i class="fa fa-edit"></i></a>
+                            <a href="javascript:;" onclick="editItem(${data[i].id})" data-toggle="tooltip" title="编辑"><i class="fa fa-edit"></i></a>
                             <a href="javascript:;" onclick="del(${data[i].id})" data-toggle="tooltip" title="删除"><i class="fa fa-trash"></i></a>
                         </td>
                     </tr>
@@ -399,10 +399,10 @@
         $('#searchInp').on('input', search);
 
 
-        let initTable = async () => {
+        let initTable = async (backToFirstPage = true) => {
             let dataRaw = await $.getJSON("https://api.travellings.cn/all");
             listData = dataRaw.data;
-            renderTable(listData);
+            renderTable(listData, backToFirstPage);
         }
 
 
@@ -421,7 +421,7 @@
            
             if (res.success) {
                 alert(res.msg);
-                initTable();
+                initTable(false);
             } else {
                 alert(res.msg);
             }
@@ -486,6 +486,78 @@
             $(this).attr("disabled", false);
             $("#refreshSpinner").hide();
         });
+
+        // Edit
+        let showInfo = msg => {
+            $('#info').text(msg).slideDown();
+            setTimeout(() => {
+                $('#info').slideUp();
+            }, 3000);
+        }
+
+        let showSpinner = () => {
+            $("#submitBtn").attr("disabled", true);
+            $("#spinner").show();
+        }
+
+        let hideSpinner = () => {
+            $("#submitBtn").attr("disabled", false);
+            $("#spinner").hide();
+        }
+
+        let getOriginalData = async () => {
+            let websiteId = getWebsiteIdFromURL(); // 获取网站id
+            let res = null;
+            try {
+                res = await $.getJSON(`https://api.travellings.cn/action/${websiteId}?token=${localStorage.tlogin}`);
+            } catch (error) {
+                showInfo(error.responseJSON.msg);
+                return;
+            }
+
+            if (!res.success) {
+                showInfo(res.msg);
+                return;
+            }
+
+            let { name, link, status, tag } = res.data;
+            $('#websiteName').val(name);
+            $('#websiteLink').val(link);
+            $('#tag').val(tag);
+            $('#status').val(status);
+        }
+
+        let update = async () => {
+            let id = getWebsiteIdFromURL(); // 获取网站id
+            let name = $('#websiteName').val();
+            let link = $('#websiteLink').val();
+            let tag = $('#tag').val();
+            let status = $('#status').val();
+
+            showSpinner();
+
+            // 发送更新请求
+            try {
+                let res = await jsonPost(`https://api.travellings.cn/action/edit?token=${localStorage.tlogin}`, {id, name, link, tag, status });
+                showInfo(res.msg)
+                if (res.success) {
+                    $('#editItem').modal('hide');
+                    initTable(false);
+                }
+            } catch (error) {
+                showInfo(error.responseJSON.msg);
+            }
+
+            hideSpinner();
+        }
+
+        $("#submitBtn").click(update);
+
+        let editItem = async id => {
+            $('#siteID').text(id);
+            await getOriginalData();
+            $('#editItem').modal('show');
+        }
 
         // by xuanzhi33
     </script>
