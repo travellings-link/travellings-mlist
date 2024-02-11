@@ -435,6 +435,9 @@ let getJsonWithoutCredentials = url => {
 }
 
 let getIssues = async () => {
+    $("#syncBtn").attr("disabled", true);
+    $("#refreshIssuesSpinner").show();
+
     let timestamp = new Date().getTime();
 
     let res = await getJsonWithoutCredentials("https://api.github.com/repos/travellings-link/travellings/issues?labels=审核通过&_t=" + timestamp);
@@ -461,15 +464,27 @@ let getIssues = async () => {
                     <td><button class="btn btn-success btn-sm addBtn" onclick="addWebsite(${i})">添加</button></td>
                 </tr>`;
     }
+
+    if (res.length == 0) {
+        html = `
+            <tr>
+                <td colspan="6" class="text-center">
+                    <i class="fa fa-minus-circle"></i>
+                    暂无数据
+                </td>
+            </tr>
+        `;
+    }
+
     $("#websites").html(html);
 
-    $("#refreshIssuesBtn").attr("disabled", false);
+    $("#syncBtn").attr("disabled", false);
     $("#refreshIssuesSpinner").hide();
 }
 
 $("#syncBtn").click(async () => {
-    $("#sync").modal("show");
     await getIssues();
+    $("#sync").modal("show");
 });
 
 $("#addAll").click(async () => {
@@ -497,10 +512,4 @@ $("#addAll").click(async () => {
     $("#addAll").attr("disabled", false);
     $("#addSpinner").hide();
     $(".addBtn").fadeOut();
-});
-
-$("#refreshIssuesBtn").click(async () => {
-    $("#refreshIssuesBtn").attr("disabled", true);
-    $("#refreshIssuesSpinner").show();
-    await getIssues();
 });
