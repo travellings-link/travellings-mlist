@@ -15,11 +15,11 @@
                 return url.searchParams.get(name);
             }
 
-            function submit(vk) {
+            function submit(token) {
                 const id = document.getElementById("id").value;
                 const reason = document.getElementById("reason").value;
 
-                const data = {"id": id, "reason": reason, "vk": vk}
+                const data = {"id": id, "reason": reason, "vk": token}
                 fetch("https://api.travellings.cn/report", {
                     method: "POST", // or 'PUT'
                     headers: {
@@ -62,8 +62,8 @@
             window.onloadTurnstileCallback = function () {
                 turnstile.render('#check', {
                     sitekey: '0x4AAAAAAARuWQIjaC-Tm8-m',
-                    callback: function(token) {
-                        var token = token;
+                    callback: function(n) {
+                        var token = n;
                     },
                 });
             };
