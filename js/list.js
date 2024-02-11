@@ -257,20 +257,7 @@ let del = async (id) => {
     }
 }
 
-function getCookie(cname) {
-    var name = cname + "=";
-    var ca = document.cookie.split(';');
-    for (var i = 0; i < ca.length; i++) {
-        var c = ca[i].trim();
-        if (c.indexOf(name) == 0) return c.substring(name.length, c.length);
-    }
-    return "";
-}
-
-
 let checkUser = async () => {
-    let token = getCookie("_tlogin")
-    if (!token) return; // 如果没有登录态，就不用check了
 
     let res = await $.getJSON(`https://api.travellings.cn/user`);
     console.log(res);
