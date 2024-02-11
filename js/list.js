@@ -415,11 +415,11 @@ let addWebsite = async index => {
     try {
         res = await jsonPost(`https://api.travellings.cn/action/add`, [website]);
     } catch (error) {
-        showInfo(error.responseJSON.msg);
+        showInfoSync(error.responseJSON.msg);
         return;
     }
     
-    showInfo(res.msg);
+    showInfoSync(res.msg);
     thisBtn.fadeOut();
 }
 
@@ -498,7 +498,7 @@ $("#addAll").click(async () => {
     try {
         res = await jsonPost(`https://api.travellings.cn/action/add`, websites);
     } catch (error) {
-        showInfo(error.responseJSON.msg);
+        showInfoSync(error.responseJSON.msg);
         return;
     }
     
@@ -507,7 +507,7 @@ $("#addAll").click(async () => {
         await initTable(false);
         $("#sync").modal("hide");
     } else {  
-        showInfo(res.msg);
+        showInfoSync(res.msg);
     }
     $("#addAll").attr("disabled", false);
     $("#addSpinner").hide();
