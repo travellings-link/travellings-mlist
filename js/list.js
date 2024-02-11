@@ -373,8 +373,8 @@ let update = async () => {
     try {
         let res = await jsonPost(`https://api.travellings.cn/action/edit`, {id, name, link, tag, status });
         if (res.success) {
+            await initTable(false);
             $('#editItem').modal('hide');
-            initTable(false);
         } else {
             showInfo(res.msg);
         }
@@ -456,7 +456,10 @@ let getIssues = async () => {
     $("#refreshIssuesSpinner").hide();
 }
 
-getIssues();
+$("#syncBtn").click(async () => {
+    $("#sync").modal("show");
+    await getIssues();
+});
 
 $("#addAll").click(async () => {
     $("#addAll").attr("disabled", true);
