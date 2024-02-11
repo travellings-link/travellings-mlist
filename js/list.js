@@ -434,6 +434,19 @@ let getJsonWithoutCredentials = url => {
     });
 }
 
+let jsonPostWithoutCredentials = (url, data) => {
+    return $.ajax({
+        url,
+        type: "POST",
+        data: JSON.stringify(data),
+        contentType: "application/json",
+        dataType: "json",
+        xhrFields: {
+            withCredentials: false
+        }
+    });
+}
+
 let getIssues = async () => {
     $("#syncBtn").attr("disabled", true);
     $("#refreshIssuesSpinner").show();
@@ -536,15 +549,21 @@ let showInfoReport = msg => {
 
 
 $("#reportBtn").click(async () => {
+    $("#reportBtn").attr("disabled", true);
+    $("#reportSpinner").show();
+
     const id = $("#siteIDReport").text();
     const reason = $("#reportReason").val();
     const data = {"id": id, "reason": reason, "vk": vktoken};
-    let res = await jsonPost("https://api.travellings.cn/report", data)
+    let res = await jsonPostWithoutCredentials("https://api.travellings.cn/report", data)
     if (res.success) {
         $("#report").modal("hide");
     } else {
         showInfoReport(res.msg);
     }
+
+    $("#reportBtn").attr("disabled", false);
+    $("#reportSpinner").hide();
 });
 
 let reportItem = id => {
