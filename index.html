@@ -75,8 +75,9 @@
                 </select>
                 <span class="adminOnly">
                     <a class="btn btn-success mb-1" href="./user/admin/add.html" target="_blank"><i class="fa fa-plus"></i> 新增网站</a>
-                    <a class="btn btn-success mb-1" href="javascript:;" id="syncBtn"><i class="fa fa-check-square-o"></i> 一键添加
-                        <span class="spinner-border spinner-border-sm" id="refreshIssuesSpinner" style="display: none;"></span></a>
+                    <button class="btn btn-success mb-1" id="syncBtn"><i class="fa fa-check-square-o"></i> 一键添加
+                        <span class="spinner-border spinner-border-sm" id="refreshIssuesSpinner" style="display: none;"></span>
+                    </button>
                     <a class="btn btn-light mb-1" data-toggle="tooltip" title="点击退出登录" href="javascript:;" onclick="logout()"><i class="fa fa-user"></i> <span class="username"></span> (管理员)</a>
                 </span>
                 <span class="guestUserOnly" style="display: none;">
