@@ -172,12 +172,12 @@ let displayTable = () => {
                 <td data-toggle="tooltip" title="${status}">${data[i].id}</td>
                 <td>${data[i].name}${statusHTML}</td>
                 <td><a href="${data[i].url}" target="_blank">${displayUrl}</a></td>
-                <td><a href="https://list.travellings.cn/report.html?id=${data[i].id}" target="_blank"><button type="button" class="btn btn-info">举报网站</button></a></td>
                 <td class="pcOnly"><span${failedReasonHTML}>${data[i].status}</span></td>
                 <td class="pcOnly">${tagHTML}</td>
-                <td class="adminOnly">
-                    <a href="javascript:;" onclick="editItem(${data[i].id})" data-toggle="tooltip" title="编辑"><i class="fa fa-edit"></i></a>
-                    <a href="javascript:;" onclick="del(${data[i].id})" data-toggle="tooltip" title="删除"><i class="fa fa-trash"></i></a>
+                <td>
+                    <a href="javascript:;" class="adminOnly" onclick="editItem(${data[i].id})" data-toggle="tooltip" title="编辑"><i class="fa fa-edit"></i></a>
+                    <a href="javascript:;" class="adminOnly" onclick="del(${data[i].id})" data-toggle="tooltip" title="删除"><i class="fa fa-trash"></i></a>
+                    <a href="https://list.travellings.cn/report.html?id=${data[i].id}" data-toggle="tooltip" title="举报网站"><i class="fa fa-flag"></i></a>
                 </td>
             </tr>
         `;
