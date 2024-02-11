@@ -161,16 +161,57 @@
                 </div>
             </div>
             <div class="modal-footer">
-              <button id="submitBtn" class="btn btn-primary"><span class="spinner-border spinner-border-sm" style="display: none;" id="spinner"></span>
+              <button id="submitBtnEdit" class="btn btn-primary"><span class="spinner-border spinner-border-sm" style="display: none;" id="spinner"></span>
                 更新</button>
               <button type="button" class="btn btn-secondary" data-dismiss="modal">取消</button>
             </div>
           </div>
         </div>
-      </div>
+    </div>
+
+    <div class="modal fade" id="sync">
+        <div class="modal-dialog modal-dialog-centered">
+          <div class="modal-content main">
+
+            <div class="modal-header">
+              <h4 class="modal-title">一键添加</h4>
+              <button type="button" class="close" data-dismiss="modal">×</button>
+            </div>
+
+            <div class="modal-body">
+                <div class="alert alert-primary" style="display: none;" id="infoSync"></div>
+                <div>以下为包含 “审核通过” Tag 的 <strong>OPEN</strong> Issues</div>
+                <table class="table mt-3">
+                    <thead>
+                        <th>ID</th>
+                        <th>网站名称</th>
+                        <th>网站链接</th>
+                        <th>操作</th>
+                    </thead>
+                    <tbody id="websites">
+                        <tr>
+                            <td><span class="spinner-border"></span></td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        
+            <div class="modal-footer">
+                <button class="btn btn-success" id="addAll">
+                    <span class="spinner-border spinner-border-sm" style="display: none;" id="addSpinner"></span>
+                    一键添加
+                </button>
+                <button class="btn btn-secondary" id="refreshIssues" disabled>
+                    <span class="spinner-border spinner-border-sm" id="refreshIssuesSpinner"></span>
+                    刷新数据
+                </button>
+            </div>
+          </div>
+        </div>
+    </div>
 
     <script src="https://unpkg.zhimg.com/jquery@3/dist/jquery.min.js"></script>
     <script src="https://cdn.staticfile.org/popper.js/1.16.1/umd/popper.min.js"></script>	
 	<script src="https://unpkg.zhimg.com/bootstrap@4.4.1/dist/js/bootstrap.min.js"></script>
-    <script src="./js/list.js?v=0211"></script>
+    <script src="./js/list.js?v=021102"></script>
 </body>

@@ -242,7 +242,7 @@ let del = async (id) => {
     }
     let res = null;
     try {
-        res = await jsonPost(`https://api.travellings.cn/action/del?token=${localStorage.tlogin}`, { id });
+        res = await jsonPost(`https://api.travellings.cn/action/del`, { id });
     } catch (error) {
         alert(error.responseJSON.msg);
         return;
@@ -256,11 +256,22 @@ let del = async (id) => {
     }
 }
 
-let checkUser = async () => {
-    let token = localStorage.tlogin;
-    if (!token) return; // 未登录
+function getCookie(cname) {
+    var name = cname + "=";
+    var ca = document.cookie.split(';');
+    for (var i = 0; i < ca.length; i++) {
+        var c = ca[i].trim();
+        if (c.indexOf(name) == 0) return c.substring(name.length, c.length);
+    }
+    return "";
+}
 
-    let res = await $.getJSON(`https://api.travellings.cn/user?token=${token}`);
+
+let checkUser = async () => {
+    let token = getCookie("_tlogin")
+    if (!token) return; // 如果没有登录态，就不用check了
+
+    let res = await $.getJSON(`https://api.travellings.cn/user`);
     console.log(res);
     let data = res.data;
 
@@ -291,9 +302,8 @@ init();
 let logout = async () => {
     if (!confirm("确定要退出登录吗？")) return;
 
-    let res = await $.getJSON(`https://api.travellings.cn/logout?token=${localStorage.tlogin}`);
+    let res = await $.getJSON(`https://api.travellings.cn/logout`);
     alert(res.msg);
-    localStorage.removeItem("tlogin");
     
     location.reload();
 }
@@ -324,13 +334,13 @@ let showInfo = msg => {
     }, 3000);
 }
 
-let showSpinner = () => {
-    $("#submitBtn").attr("disabled", true);
+let showSpinnerEdit = () => {
+    $("#submitBtnEdit").attr("disabled", true);
     $("#spinner").show();
 }
 
-let hideSpinner = () => {
-    $("#submitBtn").attr("disabled", false);
+let hideSpinnerEdit = () => {
+    $("#submitBtnEdit").attr("disabled", false);
     $("#spinner").hide();
 }
 
@@ -338,7 +348,7 @@ let getOriginalData = async id => {
     let websiteId = id;
     let res = null;
     try {
-        res = await $.getJSON(`https://api.travellings.cn/action/${websiteId}?token=${localStorage.tlogin}`);
+        res = await $.getJSON(`https://api.travellings.cn/action/${websiteId}`);
     } catch (error) {
         showInfo(error.responseJSON.msg);
         return;
@@ -363,11 +373,11 @@ let update = async () => {
     let tag = $('#tag').val();
     let status = $('#status').val();
 
-    showSpinner();
+    showSpinnerEdit();
 
     // 发送更新请求
     try {
-        let res = await jsonPost(`https://api.travellings.cn/action/edit?token=${localStorage.tlogin}`, {id, name, link, tag, status });
+        let res = await jsonPost(`https://api.travellings.cn/action/edit`, {id, name, link, tag, status });
         if (res.success) {
             $('#editItem').modal('hide');
             initTable(false);
@@ -378,13 +388,111 @@ let update = async () => {
         showInfo(error.responseJSON.msg);
     }
 
-    hideSpinner();
+    hideSpinnerEdit();
 }
 
-$("#submitBtn").click(update);
+$("#submitBtnEdit").click(update);
 
 let editItem = async id => {
     $('#siteID').text(id);
     await getOriginalData(id);
     $('#editItem').modal('show');
 }
+
+// sync
+
+let showInfoSync = msg => {
+    $('#infoSync').text(msg).slideDown();
+    setTimeout(() => {
+        $('#infoSync').slideUp();
+    }, 3000);
+}
+
+
+let websites = null;
+let addWebsite = async index => {
+    let thisBtn = $(".addBtn").eq(index);
+    thisBtn.attr("disabled", true);
+    thisBtn.text("添加中...");
+
+    let website = websites[index];
+
+    let res = null;
+    try {
+        res = await jsonPost(`https://api.travellings.cn/action/add`, [website]);
+    } catch (error) {
+        showInfo(error.responseJSON.msg);
+        return;
+    }
+    
+    showInfo(res.msg);
+    thisBtn.fadeOut();
+}
+
+let getIssues = async () => {
+    let timestamp = new Date().getTime();
+
+    let res = await $.getJSON("https://api.github.com/repos/travellings-link/travellings/issues?labels=审核通过&_t=" + timestamp);
+    let html = "";
+    websites = [];
+    for (let i = 0; i < res.length; i++) {
+        let body = res[i].body;
+        let websiteData = body.split("\n");
+        let websiteName = websiteData[2];
+        let websiteLink = websiteData[6];
+        let issuesID = res[i].number;
+        let issuesLink = res[i].html_url;
+        websites.push({
+            name: websiteName,
+            link: websiteLink,
+            status: "RUN",
+            tag: "go"
+        });
+
+        html += `<tr>
+                    <td><a href="${issuesLink}" target="_blank">#${issuesID}</a></td>
+                    <td>${websiteName}</td>
+                    <td><a href="${websiteLink}" target="_blank">${websiteLink}</a></td>
+                    <td><button class="btn btn-success btn-sm addBtn" onclick="addWebsite(${i})">添加</button></td>
+                </tr>`;
+    }
+    $("#websites").html(html);
+
+    $("#refreshIssuesBtn").attr("disabled", false);
+    $("#refreshIssuesSpinner").hide();
+}
+
+getIssues();
+
+$("#addAll").click(async () => {
+    $("#addAll").attr("disabled", true);
+    $("#addSpinner").show();
+    
+    $(".addBtn").attr("disabled", true);
+    $(".addBtn").text("添加中...");
+
+    let res = null;
+    try {
+        res = await jsonPost(`https://api.travellings.cn/action/add`, websites);
+    } catch (error) {
+        showInfo(error.responseJSON.msg);
+        return;
+    }
+    
+    if (res.success) {
+        curPage = pageNum;
+        await initTable(false);
+        $("#sync").modal("hide");
+    } else {  
+        showInfo(res.msg);
+    }
+    $("#addAll").attr("disabled", false);
+    $("#addSpinner").hide();
+    $(".addBtn").fadeOut();
+});
+
+$("#refreshIssuesBtn").click(async () => {
+    $("#refreshIssuesBtn").attr("disabled", true);
+    $("#refreshIssuesSpinner").show();
+    await getIssues();
+});
