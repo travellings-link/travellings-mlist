@@ -11,6 +11,12 @@ let pageNum = 0;
 
 const pageSize = 20;
 
+$.ajaxSetup({
+    xhrFields: {
+        withCredentials: true
+    }
+});
+
 let filterCurPage = data => {
     updatePageNav(data.length);
     let start = (curPage - 1) * pageSize;
