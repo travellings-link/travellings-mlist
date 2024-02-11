@@ -271,9 +271,8 @@ let checkUser = async () => {
     } else if (data.role == 1) { // 普通用户
         $(".guestUserOnly").fadeIn();
     } else { // 登录失效
-        localStorage.removeItem("tlogin");
         alert("您的登录态已失效，请重新登录");
-        location.reload();
+        location.href = "./user/";
     }
 
     $(".username").text(username);          
