@@ -423,10 +423,21 @@ let addWebsite = async index => {
     thisBtn.fadeOut();
 }
 
+let getJsonWithoutCredentials = url => {
+    return $.ajax({
+        url,
+        type: "GET",
+        dataType: "json",
+        xhrFields: {
+            withCredentials: false
+        }
+    });
+}
+
 let getIssues = async () => {
     let timestamp = new Date().getTime();
 
-    let res = await $.getJSON("https://api.github.com/repos/travellings-link/travellings/issues?labels=审核通过&_t=" + timestamp);
+    let res = await getJsonWithoutCredentials("https://api.github.com/repos/travellings-link/travellings/issues?labels=审核通过&_t=" + timestamp);
     let html = "";
     websites = [];
     for (let i = 0; i < res.length; i++) {
