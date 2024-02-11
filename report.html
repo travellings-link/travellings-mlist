@@ -9,11 +9,18 @@
         <link rel="stylesheet" href="https://cdn.staticfile.org/font-awesome/4.7.0/css/font-awesome.min.css">
         <script src="https://challenges.cloudflare.com/turnstile/v0/api.js?onload=onloadTurnstileCallback" defer></script>
         <script>
+            function getQueryString(name) {
+                const url_string = window.location.href;
+                const url = new URL(url_string);
+                return url.searchParams.get(name);
+            }
+            if(getQueryString('id')) {
+                document.getElementById("id").value = getQueryString('id');
+            }
+
             function submit(vk) {
-                const elem1 = document.getElementById("id");
-                const id = elem1.value;
-                const elem2 = document.getElementById("reason");
-                const reason = elem2.value;
+                const id = document.getElementById("id").value;
+                const reason = document.getElementById("reason").value;
 
                 const data = {"id": id, "reason": reason, "vk": vk}
                 fetch("https://api.travellings.cn/report", {
@@ -46,13 +53,14 @@
             <div class="checkbox mb-3">
                 <div id="check"></div>
             </div>
+            <button onclick="submit(token)">提交投诉</button>
           </form>
         <script>
             window.onloadTurnstileCallback = function () {
                 turnstile.render('#check', {
                     sitekey: '0x4AAAAAAARuWQIjaC-Tm8-m',
                     callback: function(token) {
-                        submit(token);
+                        var token = token;
                     },
                 });
             };
