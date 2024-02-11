@@ -14,9 +14,6 @@
                 const url = new URL(url_string);
                 return url.searchParams.get(name);
             }
-            if(getQueryString('id')) {
-                document.getElementById("id").value = getQueryString('id');
-            }
 
             function submit(vk) {
                 const id = document.getElementById("id").value;
@@ -41,6 +38,10 @@
         </script>
     </head>
     <body>
+        <div class="container">
+            <h1>投诉开往成员网站</h1>
+            <p>你可以在这里对开往的成员网站进行投诉。请你详尽填写投诉理由，我们将尽快处理你的请求。</p>
+        </div>
         <form>
             <div class="form-group">
             <label for="id">网站序号：</label>
@@ -48,14 +49,18 @@
             </div>
             <div class="form-group">
             <label for="reason">投诉理由：</label>
-            <input class="form-control" placeholder="输入投诉理由" id="reason">
+            <textarea class="form-control" placeholder="输入投诉理由" id="reason" rows="5"></textarea>
             </div>
             <div class="checkbox mb-3">
                 <div id="check"></div>
             </div>
-            <button onclick="submit(token)">提交投诉</button>
+            <button onclick="submit(token)" class="btn btn-primary">提交投诉</button>
           </form>
         <script>
+            if(getQueryString('id')) {
+                document.getElementById("id").value = getQueryString('id');
+            }
+
             window.onloadTurnstileCallback = function () {
                 turnstile.render('#check', {
                     sitekey: '0x4AAAAAAARuWQIjaC-Tm8-m',

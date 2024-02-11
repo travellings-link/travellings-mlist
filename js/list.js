@@ -172,6 +172,7 @@ let displayTable = () => {
                 <td data-toggle="tooltip" title="${status}">${data[i].id}</td>
                 <td>${data[i].name}${statusHTML}</td>
                 <td><a href="${data[i].url}" target="_blank">${displayUrl}</a></td>
+                <td><a href="https://list.travellings.cn/report.html?id=${data[i].id}" target="_blank"><button type="button" class="btn btn-info">举报网站</button></a></td>
                 <td class="pcOnly"><span${failedReasonHTML}>${data[i].status}</span></td>
                 <td class="pcOnly">${tagHTML}</td>
                 <td class="adminOnly">
