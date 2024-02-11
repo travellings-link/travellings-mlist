@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+
+<html lang="zh">
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>投诉网站 | 开往</title>
+        <link href="https://unpkg.zhimg.com/bootstrap@4.4.1/dist/css/bootstrap.min.css" rel="stylesheet">
+        <link rel="stylesheet" href="https://cdn.staticfile.org/font-awesome/4.7.0/css/font-awesome.min.css">
+        <script src="https://challenges.cloudflare.com/turnstile/v0/api.js" defer></script>
+    </head>
+    <body>
+        <form action="https://api.travellings.cn/report" method="post">
+            <div class="form-group">
+            <label for="id">网站序号：</label>
+            <input type="number" class="form-control" placeholder="输入网站序号" id="id">
+            </div>
+            <div class="form-group">
+            <label for="pwd">投诉理由：</label>
+            <input class="form-control" placeholder="输入投诉理由" id="reason">
+            </div>
+            <div class="checkbox mb-3">
+                <div class="cf-turnstile" data-sitekey="0x4AAAAAAARuWQIjaC-Tm8-m" data-callback="javascriptCallback"></div>
+            </div>
+            <button type="submit" class="btn btn-primary">Submit</button>
+          </form>
+    </body>
+</html>
