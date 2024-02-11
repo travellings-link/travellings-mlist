@@ -181,9 +181,9 @@ let displayTable = () => {
                 <td class="pcOnly"><span${failedReasonHTML}>${data[i].status}</span></td>
                 <td class="pcOnly">${tagHTML}</td>
                 <td>
-                    <a href="javascript:;" class="adminOnly" onclick="editItem(${data[i].id})" data-toggle="tooltip" title="编辑"><i class="fa fa-edit"></i></a>
-                    <a href="javascript:;" class="adminOnly" onclick="del(${data[i].id})" data-toggle="tooltip" title="删除"><i class="fa fa-trash"></i></a>
-                    <a href="https://list.travellings.cn/report.html?id=${data[i].id}" data-toggle="tooltip" title="举报网站"><i class="fa fa-flag"></i></a>
+                    <a href="javascript:;" class="adminOnly" onclick="editItem(${data[i].id})"><i class="fa fa-edit"></i></a>
+                    <a href="javascript:;" class="adminOnly" onclick="del(${data[i].id})"><i class="fa fa-trash"></i></a>
+                    <a href="javascript:;" onclick="reportItem(${data[i].id})" data-toggle="tooltip" title="举报网站"><i class="fa fa-flag"></i></a>
                 </td>
             </tr>
         `;
@@ -513,3 +513,41 @@ $("#addAll").click(async () => {
     $("#addSpinner").hide();
     $(".addBtn").fadeOut();
 });
+
+
+
+let vktoken = null;
+
+window.onloadTurnstileCallback = () => {
+    turnstile.render('#check', {
+        sitekey: '0x4AAAAAAARuWQIjaC-Tm8-m',
+        callback: n => {
+            vktoken = n;
+        },
+    });
+};
+
+let showInfoReport = msg => {
+    $('#infoReport').text(msg).slideDown();
+    setTimeout(() => {
+        $('#infoReport').slideUp();
+    }, 3000);
+}
+
+
+$("#reportBtn").click(async () => {
+    const id = $("#siteIDReport").text();
+    const reason = $("#reportReason").val();
+    const data = {"id": id, "reason": reason, "vk": vktoken};
+    let res = await jsonPost("https://api.travellings.cn/report", data)
+    if (res.success) {
+        $("#report").modal("hide");
+    } else {
+        showInfoReport(res.msg);
+    }
+});
+
+let reportItem = id => {
+    $("#siteIDReport").text(id);
+    $("#report").modal("show");
+}
