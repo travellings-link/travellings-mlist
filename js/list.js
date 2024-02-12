@@ -289,8 +289,6 @@ let checkUser = async () => {
         userRole = "管理员";
     } else if (data.role == 1) { // 普通用户
         $(".guestUserOnly").fadeIn();
-    } else { // 登录失效
-        showMsg("您的登录态已失效，请重新登录", "error");
     }
 
     $(".username").text(username);          
@@ -383,6 +381,7 @@ let update = async () => {
         if (res.success) {
             await initTable(false);
             $('#editItem').modal('hide');
+            showMsg(res.msg, "success");
         } else {
             showInfo(res.msg);
         }
@@ -524,6 +523,7 @@ $("#addAll").click(async () => {
         curPage = pageNum;
         await initTable(false);
         $("#sync").modal("hide");
+        showMsg(res.msg, "success");
     } else {  
         showInfoSync(res.msg);
     }
