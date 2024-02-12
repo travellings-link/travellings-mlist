@@ -559,8 +559,9 @@ $("#reportBtn").click(async () => {
 
     const id = $("#siteIDReport").text();
     const reasonSel = $("#reasonSel").val();
-    const reasonDetail = $("#reason").val();
-    const reason = reasonSel + "\n备注说明：" + reasonDetail;
+    const reasonDetail = $("#reason").val() || "无";
+    const contact = $("#contact").val() || "未填写";
+    const reason = reasonSel + "\n 备注说明：" + reasonDetail + "\n 联系方式：" + contact;
     const data = {"id": id, "reason": reason, "vk": vktoken};
     let res = await jsonPostWithoutCredentials("https://api.travellings.cn/report", data)
     if (res.success) {
