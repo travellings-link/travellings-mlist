@@ -11,6 +11,29 @@ let pageNum = 0;
 
 const pageSize = 20;
 
+const tagColor = {
+    "blog": "success",
+    "normal": "secondary",
+    "coder": "info",
+    "site": "warning",
+    "life": "primary",
+    "hybrid": "danger"
+}
+
+let initTagSel = () => {
+    let html = "";
+    for (let tag in tagColor) {
+        html += `<span class="selTags badge badge-${tagColor[tag]}">${tag}</span> `
+    }
+    $("#tagSel").html(html);
+    $(".selTags").click(function() {
+        let tagName = $(this).text();
+        $("#tag").val($("#tag").val() + "," + tagName);
+    });
+}
+
+initTagSel();
+
 
 toastr.options.progressBar = true;
 
@@ -172,14 +195,7 @@ let displayTable = () => {
 
         let tags = data[i].tag.split(",");
         let tagHTML = "";
-        const tagColor = {
-            "blog": "success",
-            "normal": "secondary",
-            "coder": "info",
-            "site": "warning",
-            "life": "primary",
-            "hybrid": "danger"
-        }
+
         for (let j = 0; j < tags.length; j++) {
             if (tags[j] == "go") continue;
             let thisColor = tagColor[tags[j]] || "secondary";
