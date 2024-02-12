@@ -11,6 +11,19 @@ let pageNum = 0;
 
 const pageSize = 20;
 
+
+toastr.options.progressBar = true;
+
+let showMsg = (msg, type = "info") => {
+    if (type == "info") {
+        toastr.info(msg);
+    } else if (type == "success") {
+        toastr.success(msg);
+    } else if (type == "error") {
+        toastr.error(msg);
+    }
+}
+
 $.ajaxSetup({
     xhrFields: {
         withCredentials: true
@@ -251,15 +264,15 @@ let del = async (id) => {
     try {
         res = await jsonPost(`https://api.travellings.cn/action/del`, { id });
     } catch (error) {
-        alert(error.responseJSON.msg);
+        showMsg(error.responseJSON.msg, "error");
         return;
     }
    
     if (res.success) {
-        alert(res.msg);
+        showMsg(res.msg, "success");
         initTable();
     } else {
-        alert(res.msg);
+        showMsg(res.msg, "error");
     }
 }
 
@@ -277,9 +290,7 @@ let checkUser = async () => {
     } else if (data.role == 1) { // 普通用户
         $(".guestUserOnly").fadeIn();
     } else { // 登录失效
-        // alert("您的登录态已失效，请重新登录");
-        // location.href = "./user/";
-        console.log("登录态失效");
+        showMsg("您的登录态已失效，请重新登录", "error");
     }
 
     $(".username").text(username);          
@@ -322,10 +333,7 @@ $("#refreshBtn").on("click", async function() {
 
 // Edit
 let showInfo = msg => {
-    $('#info').text(msg).slideDown();
-    setTimeout(() => {
-        $('#info').slideUp();
-    }, 3000);
+    showMsg(msg, "error");
 }
 
 let showSpinnerEdit = () => {
@@ -396,10 +404,7 @@ let editItem = async id => {
 // sync
 
 let showInfoSync = msg => {
-    $('#infoSync').text(msg).slideDown();
-    setTimeout(() => {
-        $('#infoSync').slideUp();
-    }, 3000);
+    showMsg(msg, "error")
 }
 
 
@@ -419,7 +424,7 @@ let addWebsite = async index => {
         return;
     }
     
-    showInfoSync(res.msg);
+    showMsg(res.msg);
     thisBtn.fadeOut();
 }
 
@@ -561,14 +566,14 @@ $("#reportBtn").click(async () => {
     const reasonSel = $("#reasonSel").val();
     const reasonDetail = $("#reason").val() || "无";
     const contact = $("#contact").val() || "未填写";
-    const reason = reasonSel + "\n 备注说明：" + reasonDetail + "\n 联系方式：" + contact;
+    const reason = reasonSel + "\n 备注说明：" + reasonDetail + "\n 联系方式: " + contact;
     const data = {"id": id, "reason": reason, "vk": vktoken};
     let res = await jsonPostWithoutCredentials("https://api.travellings.cn/report", data)
     if (res.success) {
-        alert(res.msg);
+        showMsg(res.msg, "success");
         $("#report").modal("hide");
     } else {
-        showInfoReport(res.msg);
+        showMsg(res.msg, "error");
     }
 
     $("#reportBtn").attr("disabled", false);
