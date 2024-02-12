@@ -12,4 +12,4 @@ jobs:
 
     steps:
       - name: Sync
-        run: curl https://updates.travellings.cn/update?key=${{ secrets.UPDATE_KEY }}
+        run: curl https://updates.travellings.cn/update?token=${{ secrets.UPDATE_KEY }}
