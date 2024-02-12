@@ -530,14 +530,16 @@ $("#addAll").click(async () => {
 
 
 let vktoken = null;
+let turnstileID = null;
 
 window.onloadTurnstileCallback = () => {
-    turnstile.render('#check', {
+    turnstileID =  turnstile.render('#check', {
         sitekey: '0x4AAAAAAARuWQIjaC-Tm8-m',
         callback: n => {
             vktoken = n;
         },
     });
+    console.log(`Turnstile loaded: ${turnstileID}`);
 };
 
 let showInfoReport = msg => {
@@ -547,16 +549,22 @@ let showInfoReport = msg => {
     }, 3000);
 }
 
+let turnstileUsed = false;
 
 $("#reportBtn").click(async () => {
+    turnstileUsed = true;
+
     $("#reportBtn").attr("disabled", true);
     $("#reportSpinner").show();
 
     const id = $("#siteIDReport").text();
-    const reason = $("#reason").val();
+    const reasonSel = $("#reasonSel").val();
+    const reasonDetail = $("#reason").val();
+    const reason = reasonSel + "\n备注说明：" + reasonDetail;
     const data = {"id": id, "reason": reason, "vk": vktoken};
     let res = await jsonPostWithoutCredentials("https://api.travellings.cn/report", data)
     if (res.success) {
+        alert(res.msg);
         $("#report").modal("hide");
     } else {
         showInfoReport(res.msg);
@@ -566,7 +574,27 @@ $("#reportBtn").click(async () => {
     $("#reportSpinner").hide();
 });
 
+let turnstileLoaded = false;
+let loadTurnstile = () => {
+    TURNSTILE_JS = "https://challenges.cloudflare.com/turnstile/v0/api.js?onload=onloadTurnstileCallback";
+    if (turnstileLoaded) return;
+    turnstileLoaded = true;
+
+    const script = document.createElement("script");
+    script.src = TURNSTILE_JS;
+    document.body.appendChild(script);
+}
+
+let resetTurnstile = () => {
+    if (!turnstileUsed) return;
+    turnstile.reset(turnstileID);
+    turnstileUsed = false;
+}
+
+
 let reportItem = id => {
+    loadTurnstile();
+    resetTurnstile();
     $("#siteIDReport").text(id);
     $("#report").modal("show");
 }
