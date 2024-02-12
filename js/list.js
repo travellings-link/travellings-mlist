@@ -343,6 +343,7 @@ $("#refreshBtn").on("click", async function() {
     await initTable();
     $(this).attr("disabled", false);
     $("#refreshSpinner").hide();
+    showMsg("已刷新成员数据", "success");
 });
 
 // Edit
