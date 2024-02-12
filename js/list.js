@@ -553,7 +553,7 @@ $("#reportBtn").click(async () => {
     $("#reportSpinner").show();
 
     const id = $("#siteIDReport").text();
-    const reason = $("#reportReason").val();
+    const reason = $("#reason").val();
     const data = {"id": id, "reason": reason, "vk": vktoken};
     let res = await jsonPostWithoutCredentials("https://api.travellings.cn/report", data)
     if (res.success) {
