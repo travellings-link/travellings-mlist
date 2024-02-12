@@ -21,7 +21,7 @@ const tagColor = {
 }
 
 let initTagSel = () => {
-    let html = "";
+    let html = "点击添加TAG：";
     for (let tag in tagColor) {
         html += `<span class="selTags badge badge-${tagColor[tag]}">${tag}</span> `
     }
