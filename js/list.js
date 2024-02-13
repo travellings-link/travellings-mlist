@@ -171,7 +171,11 @@ let displayTable = () => {
     }
 
     if (tagFilter != "go") { // 启用过滤器
-        data = data.filter(item => item.tag.includes(tagFilter));
+        if (tagFilter == "go-only") { // 只显示 go
+            data = data.filter(item => item.tag == "go");
+        } else { // 其他
+            data = data.filter(item => item.tag.includes(tagFilter));
+        }
     }
 
     data = filterCurPage(data);
