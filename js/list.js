@@ -258,6 +258,8 @@ let search = () => {
         return;
     }
 
+    renderTable(listData);
+
 }
 
 $('#searchInp').on('input', search);
