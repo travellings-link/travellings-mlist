@@ -8,6 +8,7 @@ let tagFilter = "go";
 let curPage = 1;
 let curData = null;
 let pageNum = 0;
+let searchKeyword = "";
 
 const pageSize = 20;
 
@@ -147,6 +148,16 @@ let jumpTo = () => {
 let displayTable = () => {
     let data = curData;
 
+    if (searchKeyword) { // 启用搜索
+        let kw = searchKeyword;
+        data = listData.filter(item => {
+            let itemName = item.name.toLowerCase();
+            let itemUrl = item.url.toLowerCase();
+            let itemId = item.id;
+            return itemName.includes(kw) || itemUrl.includes(kw) || itemId == kw;
+        });
+    }
+
     if (statusFilter != "ALL") { // 启用过滤器
         if (statusFilter == "OTHER") { // 非 RUN
             data = data.filter(item => item.status != "RUN");
@@ -239,26 +250,14 @@ let displayTable = () => {
 }
 
 let search = () => {
-    let kw = $('#searchInp').val().toLowerCase();
-    if (kw == '') {
-        renderTable(listData);
-        return;
-    }
+    searchKeyword = $('#searchInp').val().toLowerCase();
 
-    if (kw == "tlogin") {
+    if (searchKeyword == "tlogin") {
         if (!confirm("是否前往登录页面？")) return;
         location.href = "./user/";
         return;
     }
 
-    let dataFiltered = listData.filter(item => {
-        let itemName = item.name.toLowerCase();
-        let itemUrl = item.url.toLowerCase();
-        let itemId = item.id;
-        return itemName.includes(kw) || itemUrl.includes(kw) || itemId == kw;
-    });
-    
-    renderTable(dataFiltered);
 }
 
 $('#searchInp').on('input', search);
