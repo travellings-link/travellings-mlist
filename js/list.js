@@ -15,7 +15,7 @@ const pageSize = 20;
 const tagColor = {
     "blog": "success",
     "normal": "secondary",
-    "coder": "info",
+    "tech": "info",
     "site": "warning",
     "life": "primary",
     "hybrid": "danger"
