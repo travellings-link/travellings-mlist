@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="zh">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Github APP | 开往成员列表</title>
+    <link href="https://unpkg.zhimg.com/bootstrap@4.4.1/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.staticfile.org/font-awesome/4.7.0/css/font-awesome.min.css">
+    <link rel="stylesheet" href="https://cdn.staticfile.org/toastr.js/2.1.4/toastr.min.css">
+    <link rel="stylesheet" href="../css/style.css">
+</head>
+
+<body>
+        <div class="container mt-4 mb-4" id="app">
+            <div class="main p-3">
+                <h3>Github App 安装成功</h3>
+                <div>已成功配置 开往成员列表 Github App<br>
+                    安装 ID: <strong>{{ installationId }}</strong>
+                </div>
+            </div>
+        
+    </div>
+    <script src="https://unpkg.zhimg.com/vue@3/dist/vue.global.prod.js"></script>
+    <script>
+        Vue.createApp({
+            data() {
+                return {
+                    installationId: "正在获取..."
+                }
+            },
+            mounted() {
+                const urlParams = new URLSearchParams(window.location.search);
+                installationId = urlParams.get('installation_id');
+                if (installationId) {
+                    this.installationId = installationId;
+                } else {
+                    this.installationId = "未获取到安装 ID";
+                }
+            }
+        }).mount('#app');
+    </script>
+</body>
+</html>
