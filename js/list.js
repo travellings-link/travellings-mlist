@@ -493,14 +493,14 @@ let getIssues = async () => {
             name: websiteName,
             link: websiteLink,
             status: "RUN",
-            tag: "go"
+            tag: "go",
+            issuesId: issuesID
         });
 
         html += `<tr>
                     <td><a href="${issuesLink}" target="_blank">#${issuesID}</a></td>
                     <td>${websiteName}</td>
                     <td><a href="${websiteLink}" target="_blank">${websiteLink}</a></td>
-                    <td><button class="btn btn-success btn-sm addBtn" onclick="addWebsite(${i})">添加</button></td>
                 </tr>`;
     }
 
@@ -530,8 +530,6 @@ $("#addAll").click(async () => {
     $("#addAll").attr("disabled", true);
     $("#addSpinner").show();
     
-    $(".addBtn").attr("disabled", true);
-    $(".addBtn").text("添加中...");
 
     let res = null;
     try {
@@ -549,9 +547,9 @@ $("#addAll").click(async () => {
     } else {  
         showInfoSync(res.msg);
     }
+    
     $("#addAll").attr("disabled", false);
     $("#addSpinner").hide();
-    $(".addBtn").fadeOut();
 });
 
 
