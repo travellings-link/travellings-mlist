@@ -22,3 +22,37 @@ export const api = async (path, method = "GET", toast = null, data = null, crede
     }
     return resObj.data;
 }
+
+const statusIcon = {
+    'LOST': 'exclamation-triangle',
+    'WAIT': 'clock-o',
+    'RUN': 'check-circle',
+    'OTHER': 'times-circle'
+};
+const statusColor = {
+    'LOST': 'warning',
+    'WAIT': 'info',
+    'RUN': 'success',
+    'OTHER': 'danger'
+};
+const tagColor = {
+    "blog": "success",
+    "normal": "secondary",
+    "tech": "info",
+    "site": "warning",
+    "life": "primary",
+    "hybrid": "danger"
+}
+export const getStatusIcon = status => {
+    const icon = statusIcon[status] || statusIcon['OTHER'];
+    return `fa-${icon}`;
+};
+export const getStatusColor = status => {
+    const color = statusColor[status] || statusColor['OTHER'];
+    return `text-${color}`;
+};
+export const getTagColor = tag => {
+    const color = tagColor[tag] || tagColor['normal'];
+    return `badge-${color}`;
+}
+

@@ -23,27 +23,76 @@ body::before {
     color-scheme: light dark;
 }
 
+
+.list-move,
+/* 对移动中的元素应用的过渡 */
+.list-enter-active,
+.list-leave-active {
+    transition: all 0.3s;
+}
+
+.list-enter-from,
+.list-leave-to {
+    width: 0px;
+    padding: 0;
+    opacity: 0;
+}
+
+.v-enter-active,
+.v-leave-active {
+    transition: all 0.3s;
+}
+
+.v-enter-from {
+    opacity: 0;
+    transform: translateY(-50px);
+}
+.v-leave-to {
+    opacity: 0;
+    transform: translateY(50px);
+}
+
+.fade-enter-from,
+.fade-leave-to {
+    opacity: 0;
+}
+
+.fade-enter-active,
+.fade-leave-active {
+    transition: opacity 0.3s;
+}
+
+
+
 @media (prefers-color-scheme: dark) {
     body {
         background-color: black;
     }
+
     body::before {
         filter: invert(1) hue-rotate(180deg);
     }
+
     .main {
         background-color: #111111aa;
     }
-    body, .table{
+
+    body,
+    .table {
         color: #eee;
     }
-    .form-control, .form-control:focus {
+
+    .form-control,
+    .form-control:focus {
         background-color: #333;
         color: #eee;
     }
 
-    .table td, .table th {
+    .table td,
+    .table th {
         border-top: 1px solid #333;
     }
+
     .table thead th {
         border-bottom: 2px solid #333;
     }

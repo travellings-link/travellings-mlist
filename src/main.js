@@ -13,8 +13,6 @@ const i18n = createI18n({
     locale: 'zh'
 })
 
-toastr.options.progressBar = true;
-
 const app = createApp(App);
 
 app.use(i18n);
