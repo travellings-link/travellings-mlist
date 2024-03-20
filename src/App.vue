@@ -3,6 +3,9 @@ import List from './components/List.vue';
 import LangSwitch from './components/LangSwitch.vue';
 import { useI18n } from 'vue-i18n';
 import { ref, onMounted, onUnmounted } from 'vue';
+import { api } from './utils';
+import { useToast } from 'vue-toastification';
+
 const { t } = useI18n({
   messages: {
     zh: {
@@ -25,7 +28,12 @@ const { t } = useI18n({
       uncategorized: '未分类',
       fastAdd: '一键添加',
       logoutTip: '点击退出登录',
-      sourceCode: '源代码'
+      sourceCode: '源代码',
+      welcomeAdmin: '欢迎管理员 {name} 登录~',
+      welcomeNormalUser: '欢迎用户 {name} 登录~',
+      admin: '管理员',
+      normalUser: '普通用户',
+      refreshSuccess: '数据刷新成功'
     },
     en: {
       memberList: 'Member List',
@@ -47,10 +55,17 @@ const { t } = useI18n({
       uncategorized: 'Untagged',
       fastAdd: 'Sync from GitHub',
       logoutTip: 'Click to logout',
-      sourceCode: 'Source Code'
+      sourceCode: 'Source Code',
+      welcomeAdmin: 'Welcome, admin {name}~',
+      welcomeNormalUser: 'Welcome, user {name}~',
+      admin: 'Admin',
+      normalUser: 'User',
+      refreshSuccess: 'Get data successfully'
     }
   }
 });
+
+const toast = useToast();
 
 const isAdmin = ref(false);
 const isPC = ref(
@@ -61,13 +76,38 @@ const search = ref('');
 const status = ref('ALL');
 const tag = ref('go');
 const mlist = ref(null);
-
+const isNormalUser = ref(false);
+const username = ref('');
 const onResize = () => {
   isPC.value = window.innerWidth > 768;
 };
-onMounted(() => {
+
+const checkUser = async () => {
+
+  const data = await api("/user", "GET", toast);
+  console.log(data);
+
+  username.value = data.user;
+
+  if (data.role == 0) { // 管理员
+    isAdmin.value = true;
+    toast.success(t('welcomeAdmin', { name: username.value }), {timeout: 1000});
+  } else if (data.role == 1) { // 普通用户
+    isNormalUser.value = true;
+    toast.success(t('welcomeNormalUser', { name: username.value }), {timeout: 1000});
+  }
+}
+
+const refresh = async () => {
+  await mlist.value.getData();
+  toast.success(t('refreshSuccess'));
+}
+
+onMounted(async () => {
   window.addEventListener('resize', onResize);
+  await checkUser();
 })
+
 onUnmounted(() => {
   window.removeEventListener('resize', onResize);
 })
@@ -92,9 +132,8 @@ onUnmounted(() => {
             t('officialSite') }}</a>
         <a class="btn btn-secondary mb-1" href="https://www.travellings.cn/go.html" target="_blank"><i
             class="fa fa-subway"></i> {{ t('travelling') }}</a>
-        <button class="btn btn-secondary mb-1" @click="mlist.getData"
-          ><i class="fa fa-refresh"></i> {{ t('refresh') }}
-          <span class="spinner-border spinner-border-sm" style="display: none;" id="refreshSpinner"></span>
+        <button class="btn btn-secondary mb-1" @click="refresh">
+          <i class="fa fa-refresh"></i> {{ t('refresh') }}
         </button>
         <select class="btn btn-info mb-1" v-tooltip="t('filterTip')" v-model="status">
           <option value="ALL">{{ t('allSites') }}</option>
@@ -117,18 +156,22 @@ onUnmounted(() => {
           <option value="hybrid">{{ t('hybrid') }}</option>
           <option value="go-only">{{ t('uncategorized') }}</option>
         </select>
-        <span class="adminOnly">
-          <button class="btn btn-success mb-1" id="syncBtn"><i class="fa fa-plus"></i> {{ t('fastAdd') }}
+        <LangSwitch />
+        <Transition>
+          <button class="btn btn-success mb-1" v-if="isAdmin"><i class="fa fa-plus"></i> {{ t('fastAdd') }}
             <span class="spinner-border spinner-border-sm" id="refreshIssuesSpinner" style="display: none;"></span>
           </button>
-          <a class="btn btn-light mb-1" data-toggle="tooltip" title="点击退出登录" href="javascript:;" onclick="logout()"><i
-              class="fa fa-user"></i> <span class="username"></span> (管理员)</a>
-        </span>
-        <span class="guestUserOnly" style="display: none;">
-          <a class="btn btn-light mb-1" data-toggle="tooltip" title="点击退出登录" href="javascript:;" onclick="logout()"><i
-              class="fa fa-user"></i> <span class="username"></span> (普通用户)</a>
-        </span>
-        <LangSwitch />
+        </Transition>
+        <Transition>
+          <button class="btn btn-light mb-1" v-tooltip="t('logoutTip')" v-if="isAdmin">
+            <i class="fa fa-user"></i> {{ username }} ({{ t('admin') }})
+          </button>
+        </Transition>
+        <Transition>
+          <button class="btn btn-light mb-1" v-tooltip="t('logoutTip')" v-if="isNormalUser">
+            <i class="fa fa-user"></i> {{ username }} ({{ t('normalUser') }})
+          </button>
+        </Transition>
       </div>
 
       <List ref="mlist" :isPC :isAdmin :search :status :tag />

@@ -1,6 +1,6 @@
 <script setup>
 import { api, getStatusColor, getTagColor, getStatusIcon } from '@/utils.js';
-import { ref, onMounted, computed } from 'vue';
+import { ref, onMounted, computed, watch } from 'vue';
 import { useI18n } from 'vue-i18n';
 import { useToast } from 'vue-toastification';
 const props = defineProps({
@@ -136,6 +136,10 @@ const jumpTo = () => {
   }
 };
 
+watch(() => list.value.length, () => {
+  curPage.value = 1;
+});
+
 onMounted(async () => {
   await getData()
 });
@@ -186,8 +190,7 @@ defineExpose({
               <template v-for="tag in item.tag.split(',')">
                 <span class="badge" :class="[getTagColor(tag)]" v-if="tag !== 'go'">
                   {{ tag }}
-                </span>
-              </template>
+                </span>&nbsp;</template>
             </td>
           </Transition>
           <td>

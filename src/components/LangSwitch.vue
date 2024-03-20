@@ -14,8 +14,19 @@ const { locale, t } = useI18n({
 });
 
 watch(locale, (newVal) => {
+    localStorage.setItem('t_lang', newVal);
     document.title = t(`title`);
-}, { immediate: true });
+});
+
+const langSettings = localStorage.getItem('t_lang');
+if (langSettings) {
+    locale.value = langSettings;
+} else {
+    const navLang = navigator.language;
+    if (!navLang.startsWith('zh')) {
+        locale.value = 'en';
+    }
+}
 
 </script>
 <template>

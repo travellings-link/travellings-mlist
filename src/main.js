@@ -17,7 +17,9 @@ const i18n = createI18n({
 const app = createApp(App);
 
 app.use(i18n);
-app.use(Toast);
+app.use(Toast, {
+    transition: "Vue-Toastification__fade"
+});
 app.use(FloatingVue)
 
 app.mount('#app');
