@@ -10,7 +10,8 @@ import 'floating-vue/dist/style.css'
 import App from './App.vue'
 
 const i18n = createI18n({
-    locale: 'zh'
+    locale: 'zh',
+    legacy: false
 })
 
 const app = createApp(App);
