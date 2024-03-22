@@ -118,10 +118,8 @@ const report = async () => {
     const res = await api("/report", "POST", toast, data);
     // turnstile.reset(turnstileID);
     loading.value = false;
-    if (res) {
-        toast.success(t('reportSuccess'));
-        isOpen.value = false;
-    }
+    toast.success(t('reportSuccess'));
+    isOpen.value = false;
 };
 
 const canSubmit = computed(() => {
