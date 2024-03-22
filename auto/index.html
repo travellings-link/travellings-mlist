@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<!--Made with ❤ by XUANZHI-->
+<!--该页面已接入百度统计-->
+<html>
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="theme-color" content="#e9f1e9">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Travelling</title>
+    <!-- Bootstrap -->
+    <link href="https://unpkg.zhimg.com/bootstrap@4.4.1/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="icon" href="https://www.xuanzhi33.cn/favicon.ico">
+    <script>
+        var _hmt = _hmt || [];
+        (function () {
+            var hm = document.createElement("script");
+            hm.src = "https://hm.baidu.com/hm.js?2a6aca6b85659d07cf5d9e5417c4a5f5";
+            var s = document.getElementsByTagName("script")[0];
+            s.parentNode.insertBefore(hm, s);
+        })();
+    </script>
+    <style>
+        body {
+            background-color: black;
+            color: white;
+        }
+        #progBar {
+            position: fixed;
+            top: 0;
+            bottom: 0;
+            left: 0;
+            z-index: -1;
+            transition: all 1s;
+            background-color: #222;
+        }
+        .tips {
+            border-style: dashed;
+            border-radius: 5px;
+            padding: 10px;
+            margin-bottom: 20px;
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="m-3">
+        <div class="tips">请先<a href="javascript:;" id="startBtn">点我打开弹出窗口</a>。接下来调整本页面的大小和位置使得弹出窗口完全遮住此区域。最后请点击弹出窗口左下方的“Travelling”徽标，自动跳转将在10秒后开始。
+        <a href="javascript:;" id="skip">点击设置跳过的网站。</a>
+        </div>
+        <div class="row">
+            <div class="col-4">
+                <h3 id="name">开往</h1>
+            </div>
+            <div class="col-5">
+                <h5 id="link" class="mt-2">www.travellings.cn</h3>
+            </div>
+            <div class="col-3">
+                <img width="150px" src="https://www.travellings.cn/assets/logo.svg" alt="logo">
+            </div>
+        </div>
+    </div>
+    <div id="progBar" style="width: 0%;"></div>
+    <script src="https://unpkg.zhimg.com/jquery@3/dist/jquery.min.js"></script>
+    <script>
+        let skip = 0;
+        let sleep = async time => {
+            return new Promise(resolve => {
+                setTimeout(() => {
+                    resolve();
+                }, time);
+            });
+        };
+
+        let wait = async time => {
+            let progBar = $("#progBar");
+            for (let i = 0; i < time; i++) {
+                let width = i / (time - 1) * 100;
+                await sleep(1000);
+                progBar.css("width", width + "%");
+            }
+        };
+
+        let displayWindow = null;
+        $("#startBtn").click(() => {
+            displayWindow = window.open("./start.html", "", "width=960,height=540");
+        });
+
+        let startTravelling = async () => {
+            let data = await $.getJSON("https://api.travellings.cn/all?status=RUN");
+            let websites = data.data;
+
+            // 去除跳过的网站
+            websites = websites.filter(website => {
+                return website.id > skip;
+            });
+            
+            for (let i = 0; i < websites.length; i++) {
+                let url = websites[i].url;
+                let name = websites[i].name;
+                let link = url.replace("https://", "");
+                let id = websites[i].id;
+                setTimeout(() => { 
+                    $("#name").text(name);
+                    $("#link").text(link);
+                }, 1000);
+                displayWindow.location.href = url;
+                await wait(10);
+            }
+            $("#name").text("开往");
+            $("#link").text("www.travellings.cn");
+            displayWindow.location.href = "./start.html";
+        }
+
+        $(window).on("message", e => {
+            let data = e.originalEvent.data;
+            if (data == "start") {
+                startTravelling();
+            }
+        });
+
+        $("#skip").click(() => {
+            let id = prompt("请输入网站ID，将跳过这个网站及之前的所有网站");
+            id = parseInt(id);
+            if (!isNaN(id)) {
+                skip = id;
+            }
+        });
+    </script>
+</body>
+
+
+</html>

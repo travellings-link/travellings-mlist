@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>用户登录 | 开往</title>
+    <link href="https://unpkg.zhimg.com/bootstrap@4.4.1/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.staticfile.org/font-awesome/4.7.0/css/font-awesome.min.css">
+    <link rel="stylesheet" href="/css/style.css">
+</head>
+
+<body>
+    <div class="container mt-4 mb-4">
+        <div class="main p-3">
+            <h3>登录</h3>
+            <button class="btn btn-success btn-lg btn-block mt-4" id="loginBtn">
+                <i class="fa fa-github"></i> 使用 GitHub 登录
+                <span class="spinner-border spinner-border-sm" style="display: none;" id="spinner"></span>
+            </button>
+            <div class="mt-3">
+                &copy; 开往
+            </div>
+        </div>
+    </div>
+    <script src="https://unpkg.zhimg.com/jquery@3/dist/jquery.min.js"></script>
+    <script>
+        let showSpinner = () => {
+            $("#loginBtn").attr("disabled", true);
+            $("#spinner").show();
+        }
+        let hideSpinner = () => {
+            $("#loginBtn").attr("disabled", false);
+            $("#spinner").hide();
+        }
+        let login = async () => {
+            showSpinner();
+           
+            location.href = "https://api.travellings.cn/login/github";
+        }
+        $("#loginBtn").click(login);
+    </script>
+</body>
+
+</html>
