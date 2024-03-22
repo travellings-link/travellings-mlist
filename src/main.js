@@ -5,7 +5,7 @@ import FloatingVue from 'floating-vue'
 
 import "vue-toastification/dist/index.css";
 import 'floating-vue/dist/style.css'
-
+import "./style.css"
 
 import App from './App.vue'
 
