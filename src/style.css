@@ -43,14 +43,12 @@ body::before {
     transition: all 0.3s;
 }
 
-.v-enter-from {
-    opacity: 0;
-    transform: translateX(-50px);
-}
+.v-enter-from,
 .v-leave-to {
     opacity: 0;
-    transform: translateX(50px);
+    transform: translateY(50px);
 }
+
 
 .fade-enter-from,
 .fade-leave-to {
