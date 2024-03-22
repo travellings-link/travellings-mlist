@@ -1,0 +1,21 @@
+{
+  "name": "travellings-mlist",
+  "version": "0.0.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "dev": "vite",
+    "build": "vite build",
+    "preview": "vite preview"
+  },
+  "dependencies": {
+    "floating-vue": "^5.2.2",
+    "vue": "^3.4.21",
+    "vue-i18n": "9",
+    "vue-toastification": "2.0.0-rc.5"
+  },
+  "devDependencies": {
+    "@vitejs/plugin-vue": "^5.0.4",
+    "vite": "^5.1.5"
+  }
+}
