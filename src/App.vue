@@ -2,9 +2,10 @@
 import List from './components/List.vue';
 import LangSwitch from './components/LangSwitch.vue';
 import { useI18n } from 'vue-i18n';
-import { ref, onMounted, onUnmounted } from 'vue';
+import { ref, onMounted, onUnmounted, watch } from 'vue';
 import { api } from './utils';
 import { useToast } from 'vue-toastification';
+import Modal from './components/Modal.vue';
 
 const { t } = useI18n({
   messages: {
@@ -33,7 +34,8 @@ const { t } = useI18n({
       welcomeNormalUser: '欢迎用户 {name} 登录~',
       admin: '管理员',
       normalUser: '普通用户',
-      refreshSuccess: '数据刷新成功'
+      refreshSuccess: '数据刷新成功',
+      confirmLogin: '跳转到登录页面？',
     },
     en: {
       memberList: 'Member List',
@@ -60,7 +62,8 @@ const { t } = useI18n({
       welcomeNormalUser: 'Welcome, user {name}~',
       admin: 'Admin',
       normalUser: 'User',
-      refreshSuccess: 'Get data successfully'
+      refreshSuccess: 'Get data successfully',
+      confirmLogin: 'Go to login page?',
     }
   }
 });
@@ -110,6 +113,16 @@ onMounted(async () => {
 
 onUnmounted(() => {
   window.removeEventListener('resize', onResize);
+})
+
+watch(search, newVal => {
+  if (newVal == "tlogin") {
+    if (!confirm(t('confirmLogin'))) {
+      return;
+    }
+
+    location.href = "./user/index.html";
+  }
 })
 
 </script>
@@ -174,7 +187,7 @@ onUnmounted(() => {
         </Transition>
       </div>
 
-      <List ref="mlist" :isPC :isAdmin :search :status :tag />
+      <List ref="mlist" :isPC :isAdmin :search :status :tag/>
       <div class="text-center page-nav"></div>
       <div class="text-center mt-3">
         <a href="https://beian.miit.gov.cn/" target="_blank">闽ICP备2023011626号-1</a> |

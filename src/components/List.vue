@@ -3,6 +3,8 @@ import { api, getStatusColor, getTagColor, getStatusIcon } from '@/utils.js';
 import { ref, onMounted, computed, watch } from 'vue';
 import { useI18n } from 'vue-i18n';
 import { useToast } from 'vue-toastification';
+import EditItem from './EditItem.vue';
+
 const props = defineProps({
   search: {
     type: String,
@@ -38,20 +40,28 @@ const { t } = useI18n({
       loading: "加载中...",
       previous: "上一页",
       next: "下一页",
-      jumpToTip: "请输入要跳转的页码（1-{total}）"
+      jumpToTip: "请输入要跳转的页码（1-{total}）",
+      delete: "删除",
+      edit: "编辑",
+      confirmDelete: "确定删除ID为 {id} 的站点 {name} 吗？",
+      deleteSuccess: "删除成功"
     },
     en: {
       siteName: "Site Name",
       siteLink: "Site Link",
       status: "Status",
-      operation: "Operation",
+      operation: "Menu",
       statusTip: "For details, please refer to the official website's 'FAQ', and you can view some error information by hovering the mouse",
       report: "Report",
       noData: "No data",
       loading: "Loading...",
       previous: "Previous",
       next: "Next",
-      jumpToTip: "Please enter the page number (1-{total})"
+      jumpToTip: "Please enter the page number (1-{total})",
+      delete: "Delete",
+      edit: "Edit",
+      confirmDelete: "Delete site {name} with ID {id}?",
+      deleteSuccess: "Deleted successfully"
     }
   }
 });
@@ -136,6 +146,7 @@ const jumpTo = () => {
   }
 };
 
+
 watch(() => list.value.length, () => {
   curPage.value = 1;
 });
@@ -147,6 +158,29 @@ onMounted(async () => {
 defineExpose({
   getData
 })
+
+
+const deleteItem = async item => {
+  const { id, name } = item;
+  if (!confirm(t('confirmDelete', { id, name }))) {
+    return;
+  }
+
+  await api('/action/del/', 'POST', toast, { id });
+  await getData();
+  toast.success(t('deleteSuccess'));
+}
+
+const editingItem = ref({});
+const isEditing = ref(false);
+const editItem = item => {
+  isEditing.value = true;
+  editingItem.value = item;
+}
+
+const reportItem = item => {
+  console.log(item);
+}
 
 </script>
 
@@ -194,14 +228,16 @@ defineExpose({
             </td>
           </Transition>
           <td>
-            <Transition name="fade">
-              <a href="javascript:;" v-if="props.isAdmin" @click="$emit('edit', item.id)"><i class="fa fa-edit"></i></a>
+            <Transition name="fade" appear>
+              <a href="javascript:;" v-tooltip="t('edit')" v-if="props.isAdmin" @click="editItem(item)"><i
+                  class="fa fa-edit"></i></a>
             </Transition>
-            <Transition name="fade">
-              <a href="javascript:;" v-if="props.isAdmin" @click="$emit('delete', item.id)"><i
+            <Transition name="fade" appear>
+              <a href="javascript:;" v-tooltip="t('delete')" v-if="props.isAdmin" @click="deleteItem(item)"><i
                   class="fa fa-trash"></i></a>
             </Transition>
-            <a href="javascript:;" @click="$emit('report', item.id)" v-tooltip="'举报网站'"><i class="fa fa-flag"></i></a>
+            <a href="javascript:;" v-tooltip="t('report')" @click="reportItem(item)"><i
+                class="fa fa-flag"></i></a>
           </td>
         </tr>
         <tr v-if="list.length === 0">
@@ -236,4 +272,5 @@ defineExpose({
       </div>
     </div>
   </Transition>
+  <EditItem v-model="isEditing" :item="editingItem" @get-data="getData" />
 </template>

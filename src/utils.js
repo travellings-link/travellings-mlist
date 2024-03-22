@@ -35,7 +35,7 @@ const statusColor = {
     'RUN': 'success',
     'OTHER': 'danger'
 };
-const tagColor = {
+export const tagColor = {
     "blog": "success",
     "normal": "secondary",
     "tech": "info",
