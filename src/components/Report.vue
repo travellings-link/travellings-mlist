@@ -111,7 +111,7 @@ const report = async () => {
     const type = reasonSel.value;
     const comment = reasonDetail.value;
     const email = contact.value;
-    const reason = `${type}\n${t('comment')}: ${comment}\n${t('contact')}: ${email}`;
+    const reason = `${type}\n ${t('comment')}: ${comment}\n ${t('contact')}: ${email}`;
     const data = { "id": id.value, "reason": reason, "vk": vktoken.value };
 
     loading.value = true;
