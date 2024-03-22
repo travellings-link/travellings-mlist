@@ -5,7 +5,6 @@ import { useI18n } from 'vue-i18n';
 import { ref, onMounted, onUnmounted, watch } from 'vue';
 import { api } from './utils';
 import { useToast } from 'vue-toastification';
-import Modal from './components/Modal.vue';
 
 const { t } = useI18n({
   messages: {
@@ -125,6 +124,8 @@ watch(search, newVal => {
   }
 })
 
+const isSyncing = ref(false);
+
 </script>
 
 <template>
@@ -171,8 +172,8 @@ watch(search, newVal => {
         </select>
         <LangSwitch />
         <Transition>
-          <button class="btn btn-success mb-1" v-if="isAdmin"><i class="fa fa-plus"></i> {{ t('fastAdd') }}
-            <span class="spinner-border spinner-border-sm" id="refreshIssuesSpinner" style="display: none;"></span>
+          <button class="btn btn-success mb-1" v-if="isAdmin" @click="isSyncing = true">
+            <i class="fa fa-plus"></i> {{ t('fastAdd') }}
           </button>
         </Transition>
         <Transition>
@@ -187,7 +188,7 @@ watch(search, newVal => {
         </Transition>
       </div>
 
-      <List ref="mlist" :isPC :isAdmin :search :status :tag/>
+      <List ref="mlist" :isPC :isAdmin :search :status :tag v-model:isSyncing="isSyncing" />
       <div class="text-center page-nav"></div>
       <div class="text-center mt-3">
         <a href="https://beian.miit.gov.cn/" target="_blank">闽ICP备2023011626号-1</a> |

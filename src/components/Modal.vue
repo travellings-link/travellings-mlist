@@ -7,7 +7,7 @@ const isModalOpen = defineModel();
 <template>
     <teleport to="body">
         <Transition name="fade">
-            <div v-if="isModalOpen" class="modal-backdrop" @click.self="isModalOpen = false">
+            <div v-show="isModalOpen" class="modal-backdrop" @click.self="isModalOpen = false">
                 <div class="container mt-4 mb-4">
                     <div class="main p-3">
                         <div class="container">

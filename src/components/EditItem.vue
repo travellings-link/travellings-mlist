@@ -24,7 +24,7 @@ watch(() => props.item, (val) => {
     url.value = val.url;
     tag.value = val.tag;
     status.value = val.status;
-}, { immediate: true });
+});
 
 const isOpen = defineModel();
 
@@ -48,6 +48,7 @@ const { t } = useI18n({
             timeout: "连接超时 (TIMEOUT)",
             wait: "等待处理 (WAIT)",
             selectTag: "点击添加TAG",
+            updateSuccess: "更新成功"
         },
         en: {
             websiteName: "Website Name",
@@ -67,6 +68,7 @@ const { t } = useI18n({
             timeout: "Connection timeout (TIMEOUT)",
             wait: "Waiting for processing (WAIT)",
             selectTag: "Click to add TAG",
+            updateSuccess: "Update successfully"
         }
     }
 });
@@ -95,7 +97,6 @@ const tagSelList = computed(() => {
 
 const submit = async () => {
     loading.value = true;
-    // let res = await jsonPost(`https://api.travellings.cn/action/edit`, {id, name, link, tag, status });
     const res = await api("/action/edit", "POST", toast, {
         id: id.value,
         name: name.value,
@@ -107,6 +108,7 @@ const submit = async () => {
     if (res) {
         isOpen.value = false;
         emit("getData");
+        toast.success(t('updateSuccess'));
     }
 }
 
@@ -161,7 +163,7 @@ const submit = async () => {
                 </TransitionGroup>
             </div>
         </div>
-        <button class="btn btn-primary" @click="submit">
+        <button class="btn btn-primary" @click="submit" :disabled="loading">
             <span class="spinner-border spinner-border-sm" v-if="loading"></span>
             {{ t('submit') }}
         </button>

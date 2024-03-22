@@ -4,6 +4,8 @@ import { ref, onMounted, computed, watch } from 'vue';
 import { useI18n } from 'vue-i18n';
 import { useToast } from 'vue-toastification';
 import EditItem from './EditItem.vue';
+import Report from './Report.vue';
+import Sync from './Sync.vue';
 
 const props = defineProps({
   search: {
@@ -74,6 +76,7 @@ const getData = async () => {
   listData.value = await api("/all", "GET", toast);
   loading.value = false;
 };
+
 const list = computed(() => {
 
   const searchKeyword = props.search;
@@ -114,7 +117,7 @@ const list = computed(() => {
   return data;
 });
 const curPage = ref(1);
-const pageSize = ref(20);
+const pageSize = ref(10);
 const pagedList = computed(() => {
   const start = (curPage.value - 1) * pageSize.value;
   const end = curPage.value * pageSize.value;
@@ -155,10 +158,17 @@ onMounted(async () => {
   await getData()
 });
 
-defineExpose({
-  getData
-})
 
+
+const getDataAndGoToEnd = async () => {
+  await getData();
+  curPage.value = totalPage.value;
+};
+
+defineExpose({
+  getData,
+  getDataAndGoToEnd
+})
 
 const deleteItem = async item => {
   const { id, name } = item;
@@ -178,9 +188,14 @@ const editItem = item => {
   editingItem.value = item;
 }
 
+const reportId = ref(0);
+const isReporting = ref(false);
 const reportItem = item => {
-  console.log(item);
+  reportId.value = item.id;
+  isReporting.value = true;
 }
+
+const isSyncing = defineModel("isSyncing");
 
 </script>
 
@@ -273,4 +288,6 @@ const reportItem = item => {
     </div>
   </Transition>
   <EditItem v-model="isEditing" :item="editingItem" @get-data="getData" />
+  <Report v-model="isReporting" :report-id="reportId" />
+  <Sync v-model="isSyncing" @get-data="getDataAndGoToEnd" />
 </template>
