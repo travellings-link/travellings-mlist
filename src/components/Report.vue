@@ -84,7 +84,7 @@ watch(() => props.reportId, newVal => {
     id.value = newVal;
 });
 
-window.onloadTurnstileCallback = () => {
+/* window.onloadTurnstileCallback = () => {
     turnstileID.value = turnstile.render('#check', {
         sitekey: '0x4AAAAAAARuWQIjaC-Tm8-m',
         callback: n => {
@@ -92,9 +92,9 @@ window.onloadTurnstileCallback = () => {
         },
     });
     console.log(`Turnstile loaded: ${turnstileID.value}`);
-};
+}; */
 
-const loadTurnstile = () => {
+/* const loadTurnstile = () => {
     if (turnstileLoaded.value) return;
     turnstileLoaded.value = true;
 
@@ -102,7 +102,7 @@ const loadTurnstile = () => {
     const script = document.createElement("script");
     script.src = TURNSTILE_JS;
     document.body.appendChild(script);
-}
+} */
 
 
 
@@ -116,7 +116,7 @@ const report = async () => {
 
     loading.value = true;
     const res = await api("/report", "POST", toast, data);
-    turnstile.reset(turnstileID);
+    // turnstile.reset(turnstileID);
     loading.value = false;
     if (res) {
         toast.success(t('reportSuccess'));
@@ -125,18 +125,18 @@ const report = async () => {
 };
 
 const canSubmit = computed(() => {
-    return reasonSel.value && reasonDetail.value && contact.value && vktoken.value;
+    return reasonSel.value && reasonDetail.value && contact.value;
 });
 
 const submitBtnText = computed(() => {
     return canSubmit.value ? t('submit') : t('canNotSubmit');
 });
 
-watch(isOpen, newVal => {
+/* watch(isOpen, newVal => {
     if (newVal) {
         loadTurnstile();
     }
-});
+}); */
 
 
 </script>
