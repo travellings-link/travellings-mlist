@@ -5,6 +5,7 @@ import { useI18n } from 'vue-i18n';
 import { ref, onMounted, onUnmounted, watch } from 'vue';
 import { api } from './utils';
 import { useToast } from 'vue-toastification';
+import Login from './components/Login.vue';
 
 const { t } = useI18n({
   messages: {
@@ -118,13 +119,14 @@ onUnmounted(() => {
   window.removeEventListener('resize', onResize);
 })
 
+const isLogin = ref(false);
 watch(search, newVal => {
   if (newVal == "tlogin") {
     if (!confirm(t('confirmLogin'))) {
       return;
     }
 
-    location.href = "./user/index.html";
+    isLogin.value = true;
   }
 })
 
@@ -217,4 +219,5 @@ const isSyncing = ref(false);
       </div>
     </div>
   </div>
+  <Login v-model="isLogin" />
 </template>
