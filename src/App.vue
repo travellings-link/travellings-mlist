@@ -35,6 +35,8 @@ const { t } = useI18n({
       normalUser: '普通用户',
       refreshSuccess: '数据刷新成功',
       confirmLogin: '跳转到登录页面？',
+      confirmLogout: '确定要退出登录？',
+      logoutSuccess: '退出登录成功'
     },
     en: {
       memberList: 'Member List',
@@ -63,6 +65,8 @@ const { t } = useI18n({
       normalUser: 'User',
       refreshSuccess: 'Get data successfully',
       confirmLogin: 'Go to login page?',
+      confirmLogout: 'Are you sure to logout?',
+      logoutSuccess: 'Logout successfully'
     }
   }
 });
@@ -124,6 +128,17 @@ watch(search, newVal => {
   }
 })
 
+const logout = async () => {
+  if (!confirm(t('confirmLogout'))) {
+    return;
+  }
+  const res = await api("/logout", "GET", toast);
+  if (res) {
+    toast.success(t('logoutSuccess'));
+    await checkUser();
+  }
+}
+
 const isSyncing = ref(false);
 
 </script>
@@ -177,12 +192,12 @@ const isSyncing = ref(false);
           </button>
         </Transition>
         <Transition>
-          <button class="btn btn-light mb-1" v-tooltip="t('logoutTip')" v-if="isAdmin">
+          <button class="btn btn-light mb-1" v-tooltip="t('logoutTip')" v-if="isAdmin" @click="logout">
             <i class="fa fa-user"></i> {{ username }} ({{ t('admin') }})
           </button>
         </Transition>
         <Transition>
-          <button class="btn btn-light mb-1" v-tooltip="t('logoutTip')" v-if="isNormalUser">
+          <button class="btn btn-light mb-1" v-tooltip="t('logoutTip')" v-if="isNormalUser" @click="logout">
             <i class="fa fa-user"></i> {{ username }} ({{ t('normalUser') }})
           </button>
         </Transition>

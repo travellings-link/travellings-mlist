@@ -20,6 +20,10 @@ export const api = async (path, method = "GET", toast = null, data = null, crede
         toast.error(resObj.msg);
         return null;
     }
+    if (!resObj.data) {
+        return resObj.msg;
+    }
+    
     return resObj.data;
 }
 
