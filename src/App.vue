@@ -135,7 +135,8 @@ const logout = async () => {
   const res = await api("/logout", "GET", toast);
   if (res) {
     toast.success(t('logoutSuccess'));
-    await checkUser();
+    isAdmin.value = false;
+    isNormalUser.value = false;
   }
 }
 
