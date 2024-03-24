@@ -68,10 +68,9 @@ const description = ref("");
 
 const submit = async () => {
     const labels = encodeURIComponent("申请变更信息");
-    const title = encodeURIComponent(`申请变更：${id.value}`);
+    const title = encodeURIComponent(`申请变更：${name.value}`);
     const siteid = id.value;
     const oldissue = encodeURIComponent(oldIssue.value);
-    const oldname = encodeURIComponent(name.value);
     const oldwebsite = encodeURIComponent(url.value);
     const newname = encodeURIComponent(newName.value);
     const newwebsite = encodeURIComponent(newLink.value);
@@ -82,7 +81,6 @@ const submit = async () => {
                 `&template=update.yml&title=${title}` +
                 `&siteid=${siteid}` +
                 `&oldissue=${oldissue}` +
-                `&oldname=${oldname}` +
                 `&oldwebsite=${oldwebsite}` +
                 `&name=${newname}` +
                 `&newwebsite=${newwebsite}` +
