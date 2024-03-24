@@ -6,6 +6,7 @@ import { useToast } from 'vue-toastification';
 import EditItem from './EditItem.vue';
 import Report from './Report.vue';
 import Sync from './Sync.vue';
+import ApplyEdit from './ApplyEdit.vue';
 
 const props = defineProps({
   search: {
@@ -38,6 +39,7 @@ const { t } = useI18n({
       operation: "操作",
       statusTip: "具体含义详见官网“疑难解答”，鼠标悬停可查看部分错误信息",
       report: "举报网站",
+      applyEdit: "申请变更信息",
       noData: "暂无数据",
       loading: "加载中...",
       previous: "上一页",
@@ -55,6 +57,7 @@ const { t } = useI18n({
       operation: "Menu",
       statusTip: "For details, please refer to the official website's 'FAQ', and you can view some error information by hovering the mouse",
       report: "Report",
+      applyEdit: "Apply for Edit",
       noData: "No data",
       loading: "Loading...",
       previous: "Previous",
@@ -197,6 +200,12 @@ const reportItem = item => {
 
 const isSyncing = defineModel("isSyncing");
 
+const isApplyEdit = ref(false);
+const applyEditItem = item => {
+  isApplyEdit.value = true;
+  applyingItem.value = item;
+}
+
 </script>
 
 <template>
@@ -251,6 +260,8 @@ const isSyncing = defineModel("isSyncing");
               <a href="javascript:;" v-tooltip="t('delete')" v-if="props.isAdmin" @click="deleteItem(item)"><i
                   class="fa fa-trash"></i></a>
             </Transition>
+            <a href="javascript:;" v-tooltip="t('applyEdit')" @click="applyEditItem(item)"><i
+                class="fa fa-pencil"></i></a>
             <a href="javascript:;" v-tooltip="t('report')" @click="reportItem(item)"><i
                 class="fa fa-flag"></i></a>
           </td>
@@ -290,4 +301,5 @@ const isSyncing = defineModel("isSyncing");
   <EditItem v-model="isEditing" :item="editingItem" @get-data="getData" />
   <Report v-model="isReporting" :report-id="reportId" />
   <Sync v-model="isSyncing" @get-data="getDataAndGoToEnd" />
+  <ApplyEdit v-model="isApplyEdit" :item="applyingItem" />
 </template>
