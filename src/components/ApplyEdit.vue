@@ -75,9 +75,9 @@ const submit = async () => {
     const oldwebsite = encodeURIComponent(url.value);
     const newname = encodeURIComponent(newName.value);
     const newwebsite = encodeURIComponent(newLink.value);
-    const description = encodeURIComponent(description.value);
+    const desc = encodeURIComponent(description.value);
 
-    const url = `https://github.com/travellings-link/travellings/issues/new` +
+    const newIssueUrl = `https://github.com/travellings-link/travellings/issues/new` +
                 `?labels=${labels}`+
                 `&template=update.yml&title=${title}` +
                 `&siteid=${siteid}` +
@@ -86,10 +86,10 @@ const submit = async () => {
                 `&oldwebsite=${oldwebsite}` +
                 `&name=${newname}` +
                 `&newwebsite=${newwebsite}` +
-                `&description=${description}`
+                `&description=${desc}`;
     loading.value = true;
     toast.success(t('applying'));
-    location.href = url;
+    location.href = newIssueUrl;
 }
 
 
