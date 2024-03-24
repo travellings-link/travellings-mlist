@@ -201,6 +201,7 @@ const reportItem = item => {
 const isSyncing = defineModel("isSyncing");
 
 const isApplyEdit = ref(false);
+const applyingItem = ref({});
 const applyEditItem = item => {
   isApplyEdit.value = true;
   applyingItem.value = item;

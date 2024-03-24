@@ -38,6 +38,7 @@ const { t } = useI18n({
             description: "备注",
             descriptionPlaceholder: "如有其他需求请在此处填写",
             apply: "申请",
+            cancel: "取消",
             applying: "正在前往 GitHub，请稍等..."
         },
         en: {
@@ -53,6 +54,7 @@ const { t } = useI18n({
             description: "Description",
             descriptionPlaceholder: "Other requirements or descriptions",
             apply: "Apply",
+            cancel: "Cancel",
             applying: "Redirecting to GitHub, please wait..."
         }
     }
@@ -104,13 +106,13 @@ const submit = async () => {
             <label for="websiteLink">{{ t('websiteLink') }}:</label>
             <input type="url" class="form-control mb-3" id="websiteLink" :value="url" readonly>
             <label for="oldIssue">{{ t('oldIssue') }}:</label>
-            <input type="text" class="form-control mb-3" id="oldIssue" placeholder="{{ t('issuesIdPlaceholder') }}" v-model="oldIssue">
+            <input type="text" class="form-control mb-3" id="oldIssue" :placeholder="t('issuesIdPlaceholder')" v-model="oldIssue">
             <label for="newName">{{ t('newName') }}:</label>
-            <input type="text" class="form-control mb-3" id="newName" placeholder="{{ t('newNamePlaceholder') }}" v-model="newName">
+            <input type="text" class="form-control mb-3" id="newName" :placeholder="t('newNamePlaceholder')" v-model="newName">
             <label for="newLink">{{ t('newLink') }}:</label>
-            <input type="url" class="form-control mb-3" id="newLink" placeholder="{{ t('newLinkPlaceholder') }}" v-model="newLink">
+            <input type="url" class="form-control mb-3" id="newLink" :placeholder="t('newLinkPlaceholder')" v-model="newLink">
             <label for="description">{{ t('description') }}:</label>
-            <textarea class="form-control mb-3" id="description" rows="3" placeholder="{{ t('descriptionPlaceholder') }}" v-model="description"></textarea>
+            <textarea class="form-control mb-3" id="description" rows="3" :placeholder="t('descriptionPlaceholder')" v-model="description"></textarea>
         </div>
         <button class="btn btn-primary" @click="submit" :disabled="loading">
             <span class="spinner-border spinner-border-sm" v-if="loading"></span>
