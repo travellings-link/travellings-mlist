@@ -96,8 +96,16 @@ const importFromIssue = async () => {
         const issueData = issue.body.split("\n");
         const issueId = parseInt(issueData[6]);
         if (issueId === id.value) {
-            name.value = issueData[14];
-            url.value = issueData[18];
+            const issueDataName = issueData[14];
+            if (issueDataName != "_No response_") {
+                name.value = issueDataName;
+            }
+            
+            const issueDataUrl = issueData[18];
+            if (issueDataUrl != "_No response_") {
+                url.value = issueDataUrl;
+            }
+
             found = true;
             toast.success(t('importSuccess', {
                 issue: issue.number,
