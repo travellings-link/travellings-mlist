@@ -49,7 +49,9 @@ const { t } = useI18n({
             wait: "等待处理 (WAIT)",
             selectTag: "点击添加TAG",
             updateSuccess: "更新成功",
-            importFromIssue: "从 Issue 导入"
+            importFromIssue: "从 Issue 导入",
+            importSuccess: "从 Issue (#{issue}) 成功导入站点 {id} 的新信息~",
+            importFailed: "未找到和站点 {id} 相关的“信息变更”Issue"
         },
         en: {
             websiteName: "Website Name",
@@ -70,10 +72,44 @@ const { t } = useI18n({
             wait: "Waiting for processing (WAIT)",
             selectTag: "Click to add TAG",
             updateSuccess: "Update successfully",
-            importFromIssue: "Import from Issue"
+            importFromIssue: "Import from Issue",
+            importSuccess: "Successfully imported new data for site {id} from Issue #{issue}~",
+            importFailed: "No 'Information Change' Issue related to site {id} found"
         }
     }
 });
+
+const issuesApi = async () => {
+    const timestamp = new Date().getTime();
+    const res = await fetch("https://api.github.com/repos/travellings-link/travellings/issues?labels=申请变更信息&_t=" + timestamp);
+    return await res.json();
+}
+
+const loadingIssues = ref(false);
+
+const importFromIssue = async () => {
+    loadingIssues.value = true;
+    const issues = await issuesApi();
+    loadingIssues.value = false;
+    let found = false;
+    for (const issue of issues) {
+        const issueData = issue.body.split("\n");
+        const issueId = parseInt(issueData[6]);
+        if (issueId === id.value) {
+            name.value = issueData[14];
+            url.value = issueData[18];
+            found = true;
+            toast.success(t('importSuccess', {
+                issue: issue.number,
+                id: id.value
+            }));
+            break;
+        }
+    }
+    if (!found) {
+        toast.error(t('importFailed', { id: id.value }));
+    }
+}
 
 const loading = ref(false);
 
@@ -171,6 +207,10 @@ const submit = async () => {
         </button>
         <button type="button" class="btn btn-secondary" @click="isOpen = false">
             {{ t('cancel') }}
+        </button>
+        <button type="button" class="btn btn-info" @click="importFromIssue" :disabled="loadingIssues">
+            <span class="spinner-border spinner-border-sm" v-if="loadingIssues"></span>
+            {{ t('importFromIssue') }}
         </button>
     </Modal>
 </template>
