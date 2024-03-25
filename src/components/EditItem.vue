@@ -48,7 +48,8 @@ const { t } = useI18n({
             timeout: "连接超时 (TIMEOUT)",
             wait: "等待处理 (WAIT)",
             selectTag: "点击添加TAG",
-            updateSuccess: "更新成功"
+            updateSuccess: "更新成功",
+            importFromIssue: "从 Issue 导入"
         },
         en: {
             websiteName: "Website Name",
@@ -68,7 +69,8 @@ const { t } = useI18n({
             timeout: "Connection timeout (TIMEOUT)",
             wait: "Waiting for processing (WAIT)",
             selectTag: "Click to add TAG",
-            updateSuccess: "Update successfully"
+            updateSuccess: "Update successfully",
+            importFromIssue: "Import from Issue"
         }
     }
 });
