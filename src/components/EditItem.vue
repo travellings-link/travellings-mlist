@@ -87,6 +87,8 @@ const issuesApi = async () => {
 
 const loadingIssues = ref(false);
 
+const issuesId = ref(undefined);
+
 const importFromIssue = async () => {
     loadingIssues.value = true;
     const issues = await issuesApi();
@@ -107,6 +109,7 @@ const importFromIssue = async () => {
             }
 
             found = true;
+            issuesId.value = issue.number;
             toast.success(t('importSuccess', {
                 issue: issue.number,
                 id: id.value
@@ -148,7 +151,8 @@ const submit = async () => {
         name: name.value,
         link: url.value,
         tag: tag.value,
-        status: status.value
+        status: status.value,
+        issuesId: issuesId.value
     });
     loading.value = false;
     if (res) {
