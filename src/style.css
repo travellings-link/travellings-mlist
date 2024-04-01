@@ -100,7 +100,8 @@ body::before {
     }
 
     .form-control,
-    .form-control:focus {
+    .form-control:focus,
+    .form-control[readonly] {
         background-color: #333;
         color: #eee;
     }
