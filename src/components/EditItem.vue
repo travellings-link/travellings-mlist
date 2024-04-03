@@ -18,15 +18,22 @@ const name = ref("");
 const url = ref("");
 const tag = ref("");
 const status = ref("");
-watch(() => props.item, (val) => {
+const isOpen = defineModel();
+const issuesId = ref(undefined);
+
+watch(isOpen, (opened) => {
+    if (!opened) return;
+
+    const val = props.item;
     id.value = val.id;
     name.value = val.name;
     url.value = val.url;
     tag.value = val.tag;
     status.value = val.status;
+
+    issuesId.value = undefined;
 });
 
-const isOpen = defineModel();
 
 const { t } = useI18n({
     messages: {
@@ -87,7 +94,6 @@ const issuesApi = async () => {
 
 const loadingIssues = ref(false);
 
-const issuesId = ref(undefined);
 
 const importFromIssue = async () => {
     loadingIssues.value = true;
