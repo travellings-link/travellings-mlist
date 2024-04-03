@@ -11,11 +11,11 @@
   "dependencies": {
     "floating-vue": "^5.2.2",
     "vue": "^3.4.21",
-    "vue-i18n": "9",
+    "vue-i18n": "^9.10.2",
     "vue-toastification": "2.0.0-rc.5"
   },
   "devDependencies": {
     "@vitejs/plugin-vue": "^5.0.4",
-    "vite": "^5.1.5"
+    "vite": "^5.2.8"
   }
 }
