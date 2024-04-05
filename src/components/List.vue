@@ -7,6 +7,7 @@ import EditItem from './EditItem.vue';
 import Report from './Report.vue';
 import Sync from './Sync.vue';
 import ApplyEdit from './ApplyEdit.vue';
+import Changelog from './Changelog.vue';
 
 const props = defineProps({
   search: {
@@ -48,7 +49,8 @@ const { t } = useI18n({
       delete: "删除",
       edit: "编辑",
       confirmDelete: "确定删除ID为 {id} 的站点 {name} 吗？",
-      deleteSuccess: "删除成功"
+      deleteSuccess: "删除成功",
+      changelog: "更新日志"
     },
     en: {
       siteName: "Site Name",
@@ -66,7 +68,8 @@ const { t } = useI18n({
       delete: "Delete",
       edit: "Edit",
       confirmDelete: "Delete site {name} with ID {id}?",
-      deleteSuccess: "Deleted successfully"
+      deleteSuccess: "Deleted successfully",
+      changelog: "Changelog"
     }
   }
 });
@@ -207,6 +210,8 @@ const applyEditItem = item => {
   applyingItem.value = item;
 }
 
+const isChangelog = defineModel("isChangelog");
+
 </script>
 
 <template>
@@ -303,4 +308,5 @@ const applyEditItem = item => {
   <Report v-model="isReporting" :report-id="reportId" />
   <Sync v-model="isSyncing" @get-data="getDataAndGoToEnd" />
   <ApplyEdit v-model="isApplyEdit" :item="applyingItem" />
+  <Changelog v-model="isChangelog" />
 </template>

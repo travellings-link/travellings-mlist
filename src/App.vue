@@ -37,7 +37,8 @@ const { t } = useI18n({
       refreshSuccess: '数据刷新成功',
       confirmLogin: '跳转到登录页面？',
       confirmLogout: '确定要退出登录？',
-      logoutSuccess: '退出登录成功'
+      logoutSuccess: '退出登录成功',
+      changelog: "更新日志"
     },
     en: {
       memberList: 'Member List',
@@ -67,7 +68,8 @@ const { t } = useI18n({
       refreshSuccess: 'Get data successfully',
       confirmLogin: 'Go to login page?',
       confirmLogout: 'Are you sure to logout?',
-      logoutSuccess: 'Logout successfully'
+      logoutSuccess: 'Logout successfully',
+      changelog: "Changelog"
     }
   }
 });
@@ -143,6 +145,7 @@ const logout = async () => {
 }
 
 const isSyncing = ref(false);
+const isChangelog = ref(false);
 
 </script>
 
@@ -206,7 +209,7 @@ const isSyncing = ref(false);
         </Transition>
       </div>
 
-      <List ref="mlist" :isPC :isAdmin :search :status :tag v-model:isSyncing="isSyncing" />
+      <List ref="mlist" :isPC :isAdmin :search :status :tag v-model:isSyncing="isSyncing" v-model:isChangelog="isChangelog" />
       <div class="text-center page-nav"></div>
       <div class="text-center mt-3">
         <a href="https://beian.miit.gov.cn/" target="_blank">闽ICP备2023011626号-1</a> |
@@ -215,7 +218,8 @@ const isSyncing = ref(false);
         Frontend by <a href="https://github.com/xuanzhi33">@xuanzhi33</a> |
         Backend by <a href="https://github.com/BLxcwg666">@BLxcwg666</a> |
         <a href="https://github.com/travellings-link/travellings-mlist" target="_blank"><i class="fa fa-github"></i> {{
-            t('sourceCode') }}</a>
+            t('sourceCode') }}</a> |
+        <a href="javascript:;" @click="isChangelog = true"><i class="fa fa-history"></i> {{ t('changelog') }}</a>
       </div>
     </div>
   </div>
