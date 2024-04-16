@@ -81,7 +81,9 @@ const isPC = ref(
   window.innerWidth > 768
 );
 
-const search = ref('');
+const searchKeywordFromURL = new URLSearchParams(window.location.search).get('site') || '';
+
+const search = ref(searchKeywordFromURL);
 const status = ref('ALL');
 const tag = ref('go');
 const mlist = ref(null);
