@@ -22,7 +22,7 @@ const isOpen = defineModel();
 const loading = ref(false);
 const login = () => {
     loading.value = true;
-    location.href = "https://api.travellings.cn/login/github";
+    location.href = "https://api.travellings.cn/login/github?redirect_url=https://list.travellings.cn/";
 }
 
 </script>
