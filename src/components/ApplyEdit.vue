@@ -99,18 +99,31 @@ const submit = async () => {
                     }}</span></span></h4>
 
         <div class="mt-3">
-            <label for="websiteName">{{ t('websiteName') }}:</label>
-            <input type="text" class="form-control mb-3" id="websiteName" :value="name" readonly>
-            <label for="websiteLink">{{ t('websiteLink') }}:</label>
-            <input type="url" class="form-control mb-3" id="websiteLink" :value="url" readonly>
-            <label for="oldIssue">{{ t('oldIssue') }}:</label>
-            <input type="text" class="form-control mb-3" id="oldIssue" :placeholder="t('issuesIdPlaceholder')" v-model="oldIssue">
-            <label for="newName">{{ t('newName') }}:</label>
-            <input type="text" class="form-control mb-3" id="newName" :placeholder="t('newNamePlaceholder')" v-model="newName">
+            <div class="row">
+                <div class="col-md-6">
+                    <label for="websiteName">{{ t('websiteName') }}:</label>
+                    <input type="text" class="form-control mb-3" id="websiteName" :value="name" readonly>
+                </div>
+                <div class="col-md-6">
+                    <label for="websiteLink">{{ t('websiteLink') }}:</label>
+                    <input type="url" class="form-control mb-3" id="websiteLink" :value="url" readonly>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-6">
+                    <label for="oldIssue">{{ t('oldIssue') }}:</label>
+                    <input type="text" class="form-control mb-3" id="oldIssue" :placeholder="t('issuesIdPlaceholder')" v-model="oldIssue">
+                </div>
+                <div class="col-md-6">
+                    <label for="newName">{{ t('newName') }}:</label>
+                    <input type="text" class="form-control mb-3" id="newName" :placeholder="t('newNamePlaceholder')" v-model="newName">
+                </div>
+            </div>
+         
             <label for="newLink">{{ t('newLink') }}:</label>
             <input type="url" class="form-control mb-3" id="newLink" :placeholder="t('newLinkPlaceholder')" v-model="newLink">
             <label for="description">{{ t('description') }}:</label>
-            <textarea class="form-control mb-3" id="description" rows="3" :placeholder="t('descriptionPlaceholder')" v-model="description"></textarea>
+            <textarea class="form-control mb-3" id="description" rows="2" :placeholder="t('descriptionPlaceholder')" v-model="description"></textarea>
         </div>
         <button class="btn btn-primary" @click="submit" :disabled="loading">
             <span class="spinner-border spinner-border-sm" v-if="loading"></span>
