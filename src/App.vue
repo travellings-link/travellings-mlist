@@ -159,7 +159,7 @@ const isChangelog = ref(false);
           <h3 id="mainTitle">{{ t('memberList') }}</h3>
         </div>
         <div class="col-8">
-          <input type="text" class="form-control" :placeholder="t('searchPlaceholder')" v-model="search" />
+          <input type="search" class="form-control" :placeholder="t('searchPlaceholder')" v-model="search" />
         </div>
       </div>
       <div class="mt-3">
