@@ -1,6 +1,6 @@
 body::before {
     content: "";
-    background-image: url(https://www.travellings.cn/assets/img/kw-bg-2560.png);
+    background: linear-gradient(45deg, #dcebee, #f9f7f1);
     background-size: cover;
     background-position: center;
     background-repeat: no-repeat;
