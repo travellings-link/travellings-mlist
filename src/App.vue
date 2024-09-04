@@ -42,15 +42,15 @@ const { t } = useI18n({
       travellings: "开往",
       links: "传送门",
       filter: "筛选",
-      actions: "操作",
+      actions: "管理",
       status: "状态",
       tag: "标签"
     },
     en: {
       memberList: 'Member List',
       searchPlaceholder: 'Type name/link/ID to search...',
-      applyJoin: 'Apply to Join',
-      officialSite: 'Official Website',
+      applyJoin: 'Join',
+      officialSite: 'Docs',
       travelling: 'Travelling',
       refresh: 'Refresh',
       allSites: 'All Sites',
@@ -79,7 +79,7 @@ const { t } = useI18n({
       travellings: "Travellings",
       links: "Links",
       filter: "Filter",
-      actions: "Actions",
+      actions: "Manage",
       status: "Status",
       tag: "Tag"
     }
@@ -167,106 +167,102 @@ const isChangelog = ref(false);
   <div class="container mt-4 mb-4">
     <div class="main p-3">
       <div class="row">
-        <div class="col-lg-6">
+        <div class="col-md-6">
           <!-- <h3 id="mainTitle">{{ t('memberList') }}</h3> -->
           <h1 class="main-title">
             {{ t('travellings') }}
             <span class="sub-title">· {{ t('memberList') }}</span>
           </h1>
         </div>
-        <div class="col-lg-6">
-          <input type="search" class="form-control" :placeholder="t('searchPlaceholder')" v-model="search" />
+        <div class="col-md-6 links">
+          <a class="links-item" href="https://www.travellings.cn/docs/join" target="_blank">
+            <i class="fa fa-fw fa-user-plus"></i> {{ t('applyJoin') }}</a>
+          <a class="links-item" href="https://www.travellings.cn/">
+            <i class="fa fa-fw fa-home"></i> {{ t('officialSite') }}</a>
+          <a class="links-item" href="https://www.travellings.cn/go.html" target="_blank">
+            <i class="fa fa-fw fa-subway"></i> {{ t('travelling') }}
+            <i class="fa fa-angle-right"></i>
+          </a>
         </div>
       </div>
 
-      <div class="mt-3 action-btns row">
+      <div class="mt-3 row">
         
-        <div class="col-lg-4 col-12 mb-2 mb-lg-0">
-          <div class="menu-card">
-            <div class="menu-card-title">
-              <i class="fa fa-fw fa-cog"></i>
-              {{ t('actions') }}
-            </div>
-            <div class="menu-card-items">
-              <a class="menu-card-item" href="#" @click.prevent="refresh">
-                <i class="fa fa-fw fa-refresh"></i> {{ t('refresh') }}
-              </a>
-              <Transition>
-                <a class="menu-card-item" href="javascript:;" v-if="isAdmin" @click="isSyncing = true">
-                  <i class="fa fa-fw fa-plus"></i> {{ t('fastAdd') }}
-                </a>
-              </Transition>
-              <Transition>
-                <a class="menu-card-item" href="javascript:;" v-tooltip="t('logoutTip')" v-if="isAdmin" @click="logout">
-                  <i class="fa fa-fw fa-user"></i> {{ username }} ({{ t('admin') }})
-                </a>
-              </Transition>
-              <Transition>
-                <a class="menu-card-item" href="javascript:;" v-tooltip="t('logoutTip')" v-if="isNormalUser"
-                  @click="logout">
-                  <i class="fa fa-fw fa-user"></i> {{ username }} ({{ t('normalUser') }})
-                </a>
-              </Transition>
-            </div>
-          </div>
+        <div class="col-lg-8">
+          <input type="search" class="form-control" :placeholder="t('searchPlaceholder')" v-model="search" />
         </div>
 
-        <div class="col-lg-4 col-6">
-          <div class="menu-card">
-            <div class="menu-card-title">
-              <i class="fa fa-fw fa-link"></i>
-              {{ t('links') }}
-            </div>
-            <div class="menu-card-items">
-              <a class="menu-card-item" href="https://www.travellings.cn/docs/join" target="_blank">
-                <i class="fa fa-fw fa-user-plus"></i> {{ t('applyJoin') }}</a>
-              <a class="menu-card-item" href="https://www.travellings.cn/">
-                <i class="fa fa-fw fa-home"></i> {{ t('officialSite') }}</a>
-              <a class="menu-card-item" href="https://www.travellings.cn/go.html" target="_blank">
-                <i class="fa fa-fw fa-subway"></i> {{ t('travelling') }}</a>
+        <div class="col-lg-4 action-btns mt-2 mt-lg-0">
+          <div class="action-btn-container">
+            <div class="menu-card filter-card">
+              <div class="menu-card-title">
+                <i class="fa fa-fw fa-cog"></i>
+                {{ t('actions') }}
+              </div>
+              <div class="menu-card-items">
+                <a class="menu-card-item" href="#" @click.prevent="refresh">
+                  <i class="fa fa-fw fa-refresh"></i> {{ t('refresh') }}
+                </a>
+                <Transition>
+                  <a class="menu-card-item" href="javascript:;" v-if="isAdmin" @click="isSyncing = true">
+                    <i class="fa fa-fw fa-plus"></i> {{ t('fastAdd') }}
+                  </a>
+                </Transition>
+                <Transition>
+                  <a class="menu-card-item" href="javascript:;" v-tooltip="t('logoutTip')" v-if="isAdmin"
+                    @click="logout">
+                    <i class="fa fa-fw fa-user"></i> {{ username }} ({{ t('admin') }})
+                  </a>
+                </Transition>
+                <Transition>
+                  <a class="menu-card-item" href="javascript:;" v-tooltip="t('logoutTip')" v-if="isNormalUser"
+                    @click="logout">
+                    <i class="fa fa-fw fa-user"></i> {{ username }} ({{ t('normalUser') }})
+                  </a>
+                </Transition>
+              </div>
             </div>
           </div>
-        </div>
+          <div class="action-btn-container">
+            <div class="menu-card filter-card">
+              <div class="menu-card-title">
+                <i class="fa fa-fw fa-filter"></i>
+                {{ t('filter') }}
+              </div>
+              <div class="menu-card-items">
+                <label for="filter-tag">
+                  <i class="fa fa-fw fa-tags"></i>
+                  {{ t('tag') }}
+                </label>
 
-        <div class="col-lg-4 col-6">
-          <div class="menu-card">
-            <div class="menu-card-title">
-              <i class="fa fa-fw fa-filter"></i>
-              {{ t('filter') }}
-            </div>
-            <div class="menu-card-items">
-              <label for="filter-tag">
-                <i class="fa fa-fw fa-tags"></i>
-                {{ t('tag') }}
-              </label>
-             
-              <select id="filter-tag" class="menu-card-item" v-tooltip="t('filterTip')" v-model="tag">
-                <option value="go">{{ t('allTags') }}</option>
-                <option value="blog">{{ t('blog') }}</option>
-                <option value="normal">{{ t('normalSite') }}</option>
-                <option value="tech">{{ t('techSite') }}</option>
-                <option value="site">{{ t('siteSharing') }}</option>
-                <option value="life">{{ t('life') }}</option>
-                <option value="hybrid">{{ t('hybrid') }}</option>
-                <option value="go-only">{{ t('uncategorized') }}</option>
-              </select>
+                <select id="filter-tag" class="menu-card-item" v-tooltip="t('filterTip')" v-model="tag">
+                  <option value="go">{{ t('allTags') }}</option>
+                  <option value="blog">{{ t('blog') }}</option>
+                  <option value="normal">{{ t('normalSite') }}</option>
+                  <option value="tech">{{ t('techSite') }}</option>
+                  <option value="site">{{ t('siteSharing') }}</option>
+                  <option value="life">{{ t('life') }}</option>
+                  <option value="hybrid">{{ t('hybrid') }}</option>
+                  <option value="go-only">{{ t('uncategorized') }}</option>
+                </select>
 
-              <label for="filter-status">
-                <i class="fa fa-fw fa-info-circle"></i>
-                {{ t('status') }}
-              </label>
+                <label for="filter-status">
+                  <i class="fa fa-fw fa-info-circle"></i>
+                  {{ t('status') }}
+                </label>
 
-              <select id="filter-status" class="menu-card-item" v-tooltip="t('filterTip')" v-model="status">
-                <option value="ALL">{{ t('allSites') }}</option>
-                <option value="RUN">RUN</option>
-                <option value="OTHER">{{ t('notRun') }}</option>
-                <option value="LOST">LOST</option>
-                <option value="ERROR">ERROR</option>
-                <option value="TIMEOUT">TIMEOUT</option>
-                <option value="4XX">4XX</option>
-                <option value="5XX">5XX</option>
-                <option value="WAIT">WAIT</option>
-              </select>
+                <select id="filter-status" class="menu-card-item" v-tooltip="t('filterTip')" v-model="status">
+                  <option value="ALL">{{ t('allSites') }}</option>
+                  <option value="RUN">RUN</option>
+                  <option value="OTHER">{{ t('notRun') }}</option>
+                  <option value="LOST">LOST</option>
+                  <option value="ERROR">ERROR</option>
+                  <option value="TIMEOUT">TIMEOUT</option>
+                  <option value="4XX">4XX</option>
+                  <option value="5XX">5XX</option>
+                  <option value="WAIT">WAIT</option>
+                </select>
+              </div>
             </div>
           </div>
         </div>
@@ -340,6 +336,10 @@ const isChangelog = ref(false);
   width: 100%;
   outline: none;
 
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+
   transition: all 0.3s;
 }
 
@@ -354,9 +354,10 @@ const isChangelog = ref(false);
 }
 
 .menu-card-items label {
+  margin-top: 5px;
   margin-bottom: -3px;
   display: block;
-  
+
   font-size: 0.8rem;
   color: gray;
 }
@@ -369,7 +370,7 @@ const isChangelog = ref(false);
   }
 }
 
-@media (max-width: 768px) {
+/* @media (max-width: 768px) {
   .action-btns .col-6:nth-last-child(2) {
     padding-right: 5px;
   }
@@ -377,5 +378,69 @@ const isChangelog = ref(false);
     padding-left: 5px;
   }
 
+} */
+
+.links {
+  display: flex;
+  justify-content: flex-end;
+
+  align-items: center;
+}
+
+.links-item {
+  margin-left: 10px;
+  text-decoration: none;
+  transition: all 0.3s;
+}
+
+@media (max-width: 768px) {
+  .links {
+    justify-content: flex-start;
+    margin-top: 10px;
+  }
+}
+
+.filter-card {
+  cursor: pointer;
+  position: absolute;
+  right: 0;
+  width: 100%;
+  height: 38px;
+  overflow: hidden;
+
+  transition: all 0.3s;
+}
+
+.filter-card:hover {
+  width: 240px;
+  height: 160px;
+
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  z-index: 100;
+}
+
+@media (max-width: 768px) {
+  .filter-card:hover {
+    width: 100%;
+  }
+}
+
+.menu-card-title {
+  margin-bottom: 10px;
+  text-align: center;
+}
+
+.action-btns {
+  display: flex;
+}
+
+.action-btn-container {
+  position: relative;
+  height: 38px;
+  flex: 1;
+}
+
+.action-btn-container:last-child {
+  margin-left: 10px;
 }
 </style>
