@@ -252,8 +252,8 @@ const isChangelog = defineModel("isChangelog");
               </div>
               <div class="site-link">
                 <i class="fa fa-link text-muted fa-fw"></i>
-                <!-- <a :href="item.url" target="_blank">{{ item.url.replace('https://', '') }}</a> -->
-                <a :href="item.url" target="_blank">www.baidu.com</a>
+                <a :href="item.url" target="_blank">{{ item.url.replace('https://', '') }}</a>
+                <!-- <a :href="item.url" target="_blank">www.baidu.com</a> -->
               </div>
             </div>
 
