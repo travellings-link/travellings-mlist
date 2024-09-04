@@ -15,7 +15,7 @@ const { t } = useI18n({
       applyJoin: '申请加入',
       officialSite: '官网',
       travelling: '开往',
-      refresh: '刷新',
+      refresh: '刷新数据',
       allSites: '全部站点',
       notRun: '非 RUN',
       filterTip: '筛选网站（搜索结果也会被筛选）',
@@ -38,7 +38,13 @@ const { t } = useI18n({
       confirmLogin: '跳转到登录页面？',
       confirmLogout: '确定要退出登录？',
       logoutSuccess: '退出登录成功',
-      changelog: "更新日志"
+      changelog: "更新日志",
+      travellings: "开往",
+      links: "传送门",
+      filter: "筛选",
+      actions: "操作",
+      status: "状态",
+      tag: "标签"
     },
     en: {
       memberList: 'Member List',
@@ -69,7 +75,13 @@ const { t } = useI18n({
       confirmLogin: 'Go to login page?',
       confirmLogout: 'Are you sure to logout?',
       logoutSuccess: 'Logout successfully',
-      changelog: "Changelog"
+      changelog: "Changelog",
+      travellings: "Travellings",
+      links: "Links",
+      filter: "Filter",
+      actions: "Actions",
+      status: "Status",
+      tag: "Tag"
     }
   }
 });
@@ -102,10 +114,10 @@ const checkUser = async () => {
 
   if (data.role == 0) { // 管理员
     isAdmin.value = true;
-    toast.success(t('welcomeAdmin', { name: username.value }), {timeout: 1000});
+    toast.success(t('welcomeAdmin', { name: username.value }), { timeout: 1000 });
   } else if (data.role == 1) { // 普通用户
     isNormalUser.value = true;
-    toast.success(t('welcomeNormalUser', { name: username.value }), {timeout: 1000});
+    toast.success(t('welcomeNormalUser', { name: username.value }), { timeout: 1000 });
   }
 }
 
@@ -155,75 +167,204 @@ const isChangelog = ref(false);
   <div class="container mt-4 mb-4">
     <div class="main p-3">
       <div class="row">
-        <div class="col-4">
-          <h3 id="mainTitle">{{ t('memberList') }}</h3>
+        <div class="col-lg-6">
+          <!-- <h3 id="mainTitle">{{ t('memberList') }}</h3> -->
+          <h1 class="main-title">
+            {{ t('travellings') }}
+            <span class="sub-title">· {{ t('memberList') }}</span>
+          </h1>
         </div>
-        <div class="col-8">
+        <div class="col-lg-6">
           <input type="search" class="form-control" :placeholder="t('searchPlaceholder')" v-model="search" />
         </div>
       </div>
-      <div class="mt-3">
-        <a class="btn btn-primary mb-1" href="https://www.travellings.cn/docs/join" target="_blank"><i
-            class="fa fa-user-plus"></i> {{ t('applyJoin') }}</a>
-        <a class="btn btn-secondary mb-1" href="https://www.travellings.cn/"><i class="fa fa-home"></i> {{
-            t('officialSite') }}</a>
-        <a class="btn btn-secondary mb-1" href="https://www.travellings.cn/go.html" target="_blank"><i
-            class="fa fa-subway"></i> {{ t('travelling') }}</a>
-        <button class="btn btn-secondary mb-1" @click="refresh">
-          <i class="fa fa-refresh"></i> {{ t('refresh') }}
-        </button>
-        <select class="btn btn-info mb-1" v-tooltip="t('filterTip')" v-model="status">
-          <option value="ALL">{{ t('allSites') }}</option>
-          <option value="RUN">RUN</option>
-          <option value="OTHER">{{ t('notRun') }}</option>
-          <option value="LOST">LOST</option>
-          <option value="ERROR">ERROR</option>
-          <option value="TIMEOUT">TIMEOUT</option>
-          <option value="4XX">4XX</option>
-          <option value="5XX">5XX</option>
-          <option value="WAIT">WAIT</option>
-        </select>
-        <select class="btn btn-info mb-1" v-tooltip="t('filterTip')" v-model="tag">
-          <option value="go">{{ t('allTags') }}</option>
-          <option value="blog">{{ t('blog') }}</option>
-          <option value="normal">{{ t('normalSite') }}</option>
-          <option value="tech">{{ t('techSite') }}</option>
-          <option value="site">{{ t('siteSharing') }}</option>
-          <option value="life">{{ t('life') }}</option>
-          <option value="hybrid">{{ t('hybrid') }}</option>
-          <option value="go-only">{{ t('uncategorized') }}</option>
-        </select>
-        <LangSwitch />
-        <Transition>
-          <button class="btn btn-success mb-1" v-if="isAdmin" @click="isSyncing = true">
-            <i class="fa fa-plus"></i> {{ t('fastAdd') }}
-          </button>
-        </Transition>
-        <Transition>
-          <button class="btn btn-light mb-1" v-tooltip="t('logoutTip')" v-if="isAdmin" @click="logout">
-            <i class="fa fa-user"></i> {{ username }} ({{ t('admin') }})
-          </button>
-        </Transition>
-        <Transition>
-          <button class="btn btn-light mb-1" v-tooltip="t('logoutTip')" v-if="isNormalUser" @click="logout">
-            <i class="fa fa-user"></i> {{ username }} ({{ t('normalUser') }})
-          </button>
-        </Transition>
+
+      <div class="mt-3 action-btns row">
+        <div class="col-lg-4 col-6">
+          <div class="menu-card">
+            <div class="menu-card-title">
+              <i class="fa fa-fw fa-link"></i>
+              {{ t('links') }}
+            </div>
+            <div class="menu-card-items">
+              <a class="menu-card-item" href="https://www.travellings.cn/docs/join" target="_blank">
+                <i class="fa fa-fw fa-user-plus"></i> {{ t('applyJoin') }}</a>
+              <a class="menu-card-item" href="https://www.travellings.cn/">
+                <i class="fa fa-fw fa-home"></i> {{ t('officialSite') }}</a>
+              <a class="menu-card-item" href="https://www.travellings.cn/go.html" target="_blank">
+                <i class="fa fa-fw fa-subway"></i> {{ t('travelling') }}</a>
+            </div>
+          </div>
+        </div>
+
+        <div class="col-lg-4 col-6">
+          <div class="menu-card">
+            <div class="menu-card-title">
+              <i class="fa fa-fw fa-filter"></i>
+              {{ t('filter') }}
+            </div>
+            <div class="menu-card-items">
+              <label for="filter-tag">
+                <i class="fa fa-fw fa-tags"></i>
+                {{ t('tag') }}
+              </label>
+             
+              <select id="filter-tag" class="menu-card-item" v-tooltip="t('filterTip')" v-model="tag">
+                <option value="go">{{ t('allTags') }}</option>
+                <option value="blog">{{ t('blog') }}</option>
+                <option value="normal">{{ t('normalSite') }}</option>
+                <option value="tech">{{ t('techSite') }}</option>
+                <option value="site">{{ t('siteSharing') }}</option>
+                <option value="life">{{ t('life') }}</option>
+                <option value="hybrid">{{ t('hybrid') }}</option>
+                <option value="go-only">{{ t('uncategorized') }}</option>
+              </select>
+
+              <label for="filter-status">
+                <i class="fa fa-fw fa-info-circle"></i>
+                {{ t('status') }}
+              </label>
+
+              <select id="filter-status" class="menu-card-item" v-tooltip="t('filterTip')" v-model="status">
+                <option value="ALL">{{ t('allSites') }}</option>
+                <option value="RUN">RUN</option>
+                <option value="OTHER">{{ t('notRun') }}</option>
+                <option value="LOST">LOST</option>
+                <option value="ERROR">ERROR</option>
+                <option value="TIMEOUT">TIMEOUT</option>
+                <option value="4XX">4XX</option>
+                <option value="5XX">5XX</option>
+                <option value="WAIT">WAIT</option>
+              </select>
+            </div>
+          </div>
+        </div>
+
+        <div class="col-lg-4 col-12 mt-2 mt-lg-0">
+          <div class="menu-card">
+            <div class="menu-card-title">
+              <i class="fa fa-fw fa-cog"></i>
+              {{ t('actions') }}
+            </div>
+            <div class="menu-card-items">
+              <a class="menu-card-item" href="#" @click.prevent="refresh">
+                <i class="fa fa-fw fa-refresh"></i> {{ t('refresh') }}
+              </a>
+              <Transition>
+                <a class="menu-card-item" href="javascript:;" v-if="isAdmin" @click="isSyncing = true">
+                  <i class="fa fa-fw fa-plus"></i> {{ t('fastAdd') }}
+                </a>
+              </Transition>
+              <Transition>
+                <a class="menu-card-item" href="javascript:;" v-tooltip="t('logoutTip')" v-if="isAdmin" @click="logout">
+                  <i class="fa fa-fw fa-user"></i> {{ username }} ({{ t('admin') }})
+                </a>
+              </Transition>
+              <Transition>
+                <a class="menu-card-item" href="javascript:;" v-tooltip="t('logoutTip')" v-if="isNormalUser"
+                  @click="logout">
+                  <i class="fa fa-fw fa-user"></i> {{ username }} ({{ t('normalUser') }})
+                </a>
+              </Transition>
+            </div>
+          </div>
+        </div>
+
       </div>
 
-      <List ref="mlist" :isPC :isAdmin :search :status :tag v-model:isSyncing="isSyncing" v-model:isChangelog="isChangelog" />
-      <div class="text-center page-nav"></div>
+      <List ref="mlist" :isPC :isAdmin :search :status :tag v-model:isSyncing="isSyncing"
+        v-model:isChangelog="isChangelog" />
+
+      <LangSwitch class="mt-3" />
       <div class="text-center mt-3">
         <a href="https://beian.miit.gov.cn/" target="_blank">闽ICP备2023011626号-1</a> |
         <a target="_blank"
-          href="http://www.beian.gov.cn/portal/registerSystemInfo?recordcode=35059102000048">闽公网安备35059102000048号</a> |
+          href="http://www.beian.gov.cn/portal/registerSystemInfo?recordcode=35059102000048">闽公网安备35059102000048号</a>
+        <br>
         Frontend by <a href="https://github.com/xuanzhi33">@xuanzhi33</a> |
-        Backend by <a href="https://github.com/BLxcwg666">@BLxcwg666</a> |
+        Backend by <a href="https://github.com/BLxcwg666">@BLxcwg666</a> <br>
         <a href="https://github.com/travellings-link/travellings-mlist" target="_blank"><i class="fa fa-github"></i> {{
-            t('sourceCode') }}</a> |
+          t('sourceCode') }}</a> |
         <a href="javascript:;" @click="isChangelog = true"><i class="fa fa-history"></i> {{ t('changelog') }}</a>
       </div>
     </div>
   </div>
   <Login v-model="isLogin" />
 </template>
+
+<style scoped>
+.main-title {
+  font-size: 2rem;
+  font-weight: lighter;
+}
+
+.sub-title {
+  font-size: 1.5rem;
+  color: gray;
+  font-weight: bold;
+}
+
+.action-btns {
+  --card: #eee;
+}
+
+@media (prefers-color-scheme: dark) {
+  .action-btns {
+    --card: #333;
+  }
+}
+
+.menu-card {
+  background-color: var(--card);
+  border-radius: 5px;
+  padding: 5px 10px;
+
+  height: 100%;
+}
+
+
+
+.menu-card-item {
+  --item-bg: #daecff;
+  --item-bg-hover: #c5e4ff;
+  --text-color: black;
+  margin: 5px 0;
+  padding: 3px 10px;
+  display: block;
+  border: 1px solid var(--primary);
+  border-radius: 5px;
+  background-color: var(--item-bg);
+  color: var(--primary);
+  cursor: pointer;
+  width: 100%;
+  outline: none;
+
+  transition: all 0.3s;
+}
+
+.menu-card-item option {
+  background-color: var(--item-bg);
+  color: var(--text-color);
+}
+
+.menu-card-item:hover {
+  background-color: var(--item-bg-hover);
+  text-decoration: none;
+}
+
+.menu-card-items label {
+  margin-bottom: -3px;
+  display: block;
+  
+  font-size: 0.8rem;
+  color: gray;
+}
+
+@media (prefers-color-scheme: dark) {
+  .menu-card-item {
+    --item-bg: #283c51;
+    --item-bg-hover: #1f2c3a;
+    --text-color: white;
+  }
+}
+</style>

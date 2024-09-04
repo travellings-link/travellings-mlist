@@ -1,6 +1,6 @@
 body::before {
     content: "";
-    background: linear-gradient(45deg, #dcebee, #f9f7f1);
+    background: linear-gradient(45deg, #eafbfe, #fffae9);
     background-size: cover;
     background-position: center;
     background-repeat: no-repeat;
@@ -126,6 +126,10 @@ body::before {
 
     a:hover {
         color: #51a4fe;
+    }
+
+    :root {
+        --primary: #a2c1e2;
     }
 
 }

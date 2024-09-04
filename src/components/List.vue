@@ -62,7 +62,7 @@ const { t } = useI18n({
       applyEdit: "Apply for Edit",
       noData: "No data",
       loading: "Loading...",
-      previous: "Previous",
+      previous: "Prev",
       next: "Next",
       jumpToTip: "Please enter the page number (1-{total})",
       delete: "Delete",
@@ -216,7 +216,7 @@ const isChangelog = defineModel("isChangelog");
 
 <template>
   <table class="table mt-3">
-    <thead>
+    <!-- <thead>
       <tr>
         <th>ID</th>
         <th>{{ t('siteName') }}</th>
@@ -229,77 +229,89 @@ const isChangelog = defineModel("isChangelog");
         </Transition>
         <th>{{ t('operation') }}</th>
       </tr>
-    </thead>
-    <tbody>
-      <tr v-if="loading">
-        <td colspan="6" class="text-center">
+    </thead> -->
+    <div class="site-wrap row">
+      <div v-if="loading" class="col-12 text-center my-4">
           <span class="spinner-border spinner-border-sm"></span>
           {{ t('loading') }}
-        </td>
-      </tr>
+      </div>
       <template v-else>
-        <tr v-for="(item, index) in pagedList" :key="item.id">
-          <td v-tooltip="item.status">{{ item.id }}</td>
-          <td>
-            {{ item.name }}
-            <i :class="['fa', getStatusIcon(item.status), getStatusColor(item.status)]"
-              v-tooltip="item.failedReason"></i>
-          </td>
-          <td><a :href="item.url" target="_blank">{{ item.url.replace('https://', '') }}</a></td>
-          <Transition name="fade">
-            <td v-if="isPC"><span v-tooltip="item.failedReason">{{ item.status }}</span></td>
-          </Transition>
-          <Transition name="fade">
-            <td v-if="isPC">
-              <template v-for="tag in item.tag.split(',')">
-                <span class="badge" :class="[getTagColor(tag)]" v-if="tag !== 'go'">
-                  {{ tag }}
-                </span>&nbsp;</template>
-            </td>
-          </Transition>
-          <td>
-            <Transition name="fade" appear>
-              <a href="javascript:;" v-tooltip="t('edit')" v-if="props.isAdmin" @click="editItem(item)"><i
-                  class="fa fa-edit"></i></a>
-            </Transition>
-            <Transition name="fade" appear>
-              <a href="javascript:;" v-tooltip="t('delete')" v-if="props.isAdmin" @click="deleteItem(item)"><i
-                  class="fa fa-trash"></i></a>
-            </Transition>
-            <a href="javascript:;" v-tooltip="t('applyEdit')" @click="applyEditItem(item)"><i
-                class="fa fa-pencil"></i></a>
-            <a href="javascript:;" v-tooltip="t('report')" @click="reportItem(item)"><i
-                class="fa fa-flag"></i></a>
-          </td>
-        </tr>
-        <tr v-if="list.length === 0">
-          <td colspan="6" class="text-center">
+        <div v-for="(item, index) in pagedList" :key="item.id" class="col-lg-6">
+          <div class="site-card">
+            <div class="site-left">
+              <div class="site-name">
+                <span class="site-id badge badge-secondary badge-pill" v-tooltip="item.status">{{ item.id }}</span>
+                {{ item.name }}
+                <span v-if="isPC">
+                  <template v-for="tag in item.tag.split(',')">
+                    <span class="site-tag badge" :class="[getTagColor(tag)]" v-if="tag !== 'go'">
+                      {{ tag }}
+                    </span>
+                  </template>
+                </span>
+              </div>
+              <div class="site-link">
+                <i class="fa fa-link text-muted fa-fw"></i>
+                <!-- <a :href="item.url" target="_blank">{{ item.url.replace('https://', '') }}</a> -->
+                <a :href="item.url" target="_blank">www.baidu.com</a>
+              </div>
+            </div>
+
+            <div class="site-right">
+              <div>
+                <Transition name="fade">
+                  <span v-if="isPC" v-tooltip="item.failedReason" class="site-status-text" :class="getStatusColor(item.status)">
+                    {{ item.status }}</span>
+                </Transition>
+                <i class="fa fa-fw" :class="[getStatusIcon(item.status), getStatusColor(item.status)]"
+                  v-tooltip="item.failedReason"></i>
+              </div>
+
+              <div>
+                <a href="javascript:;" v-tooltip="t('edit')" v-if="props.isAdmin" @click="editItem(item)"><i
+                    class="fa fa-fw fa-edit"></i></a>
+                <a href="javascript:;" v-tooltip="t('delete')" v-if="props.isAdmin" @click="deleteItem(item)"><i
+                    class="fa fa-fw fa-trash"></i></a>
+                <a href="javascript:;" v-tooltip="t('applyEdit')" @click="applyEditItem(item)"><i
+                    class="fa fa-fw fa-pencil"></i></a>
+                <a href="javascript:;" v-tooltip="t('report')" @click="reportItem(item)"><i
+                    class="fa fa-fw fa-flag"></i></a>
+              </div>
+            </div>
+
+          </div>
+        </div>
+        <div v-if="list.length === 0" class="col-12 text-center my-4">
             <i class="fa fa-minus-circle"></i>
             {{ t('noData') }}
-          </td>
-        </tr>
+        </div>
       </template>
-    </tbody>
+    </div>
 
   </table>
   <Transition>
-    <div class="text-center" v-if="totalPage > 1 && !loading">
-      <div class="btn-group">
-        <TransitionGroup name="list">
-          <button v-for="page in pageNavButtons" :key="page" class="btn"
-            :class="{ 'btn-primary': curPage === page, 'btn-light': curPage !== page }" @click="curPage = page"
-            :disabled="page <= 0">{{ page > 0 ? page : '...' }}</button>
+    <div class="s-page-ctrl" v-if="totalPage > 1 && !loading">
+      <div class="btn-group s-page-btn-group">
+        <TransitionGroup name="s-page-btn">
+          <button v-for="page in pageNavButtons" :key="page" class="btn s-page-btn"
+            :class="{ 'btn-primary': curPage === page, 'btn-outline-primary': curPage !== page }" @click="curPage = page"
+            :disabled="page <= 0">
+            <template v-if="page > 0">
+              {{ page }}
+            </template>
+            <span v-else class="s-page-btn-ellipsis">...</span>
+          </button>
         </TransitionGroup>
-      </div><br>
-      <div class="btn-group mt-1">
-        <button class="btn btn-light" :disabled="curPage === 1" @click="curPage -= 1">
-          <i class="fa fa-chevron-left"></i>
+      </div>
+      <div class="btn-group s-page-ctrl-btns">
+        <button class="s-page-ctrl-btn btn btn-outline-primary" :disabled="curPage === 1" @click="curPage -= 1">
+          <div class="s-page-btn-icon prev"></div>
           {{ t('previous') }}
         </button>
-        <button class="btn btn-light" @click="jumpTo"> {{ curPage }} / {{ totalPage }}</button>
-        <button class="btn btn-light" :disabled="curPage === totalPage" @click="curPage += 1">
+        <button class="s-page-ctrl-btn btn btn-outline-primary" @click="jumpTo"> {{ curPage }} / {{ totalPage }}</button>
+        <button class="s-page-ctrl-btn btn btn-outline-primary" :disabled="curPage === totalPage" @click="curPage += 1">
           {{ t('next') }}
-          <i class="fa fa-chevron-right"></i>
+          <div class="s-page-btn-icon next"></div>
         </button>
       </div>
     </div>
@@ -310,3 +322,187 @@ const isChangelog = defineModel("isChangelog");
   <ApplyEdit v-model="isApplyEdit" :item="applyingItem" />
   <Changelog v-model="isChangelog" />
 </template>
+
+
+<style scoped>
+.site-card {
+  --card: #eee;
+}
+
+@media (prefers-color-scheme: dark) {
+  .site-card {
+    --card: #333;
+  }
+}
+
+.site-card {
+  background-color: var(--card);
+  display: flex;
+  justify-content: space-between;
+  margin: 5px 0;
+  padding: 5px 10px;
+  border-radius: 5px;
+  line-height: 2;
+}
+
+.site-name, .site-link {
+  max-width: 300px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+
+.site-right {
+  text-align: right;
+}
+
+.site-tag {
+  border-radius: 0;
+  font-size: 10px;
+}
+.site-tag:first-child {
+  border-top-left-radius: 5px;
+  border-bottom-left-radius: 5px;
+}
+.site-tag:last-child {
+  border-top-right-radius: 5px;
+  border-bottom-right-radius: 5px;
+}
+
+.site-status-text {
+  font-size: 12px;
+  display: inline-block;
+  transform: translate(4px, -2px);
+}
+
+/* SPage */
+.s-page-ctrl {
+  display: flex;
+  justify-content: space-between;
+}
+
+.s-page-btn-group {
+  display: flex;
+  flex-grow: 2;
+
+  margin-right: 20px;
+}
+
+.s-page-ctrl-btns {
+  flex-grow: 1;
+}
+
+.s-page-btn-ellipsis {
+  display: block;
+  transform: translateY(-4px);
+}
+
+.s-page-btn-icon {
+  display: inline-block;
+  --size: 8px;
+  width: var(--size);
+  height: var(--size);
+  border: 2px solid var(--primary);
+  border-top: none;
+  border-right: none;
+  margin-bottom: 1.5px;
+  transition: all .15s;
+}
+
+.btn:not(:disabled):hover .s-page-btn-icon {
+  border-color: white;
+}
+
+.s-page-btn-icon.prev {
+  transform: rotate(45deg);
+}
+
+.s-page-btn-icon.next {
+  transform: rotate(-135deg);
+}
+
+
+
+@media (max-width: 992px) {
+  .s-page-ctrl {
+    flex-wrap: wrap;
+  }
+  .s-page-btn-group {
+    width: 100%;
+    margin-right: 0;
+  }
+  .s-page-btn:first-child {
+    border-bottom-left-radius: 0;
+  }
+  .s-page-btn:last-child {
+    border-bottom-right-radius: 0;
+  }
+
+  .s-page-ctrl-btns {
+    width: 100%;
+    margin-top: -1px;
+  }
+
+  .s-page-ctrl-btn:first-child {
+    border-top-left-radius: 0;
+  }
+  .s-page-ctrl-btn:last-child {
+    border-top-right-radius: 0;
+  }
+
+  
+  .s-page-btn-group > .s-page-btn {
+    flex: 2 1 auto;
+    padding: .375rem 1px;
+  }
+
+  .s-page-btn:disabled {
+    flex: 1 1 auto;
+    padding: .375rem 0;
+  }
+  
+}
+
+
+.s-page-btn-move,
+.s-page-btn-enter-active,
+.s-page-btn-leave-active {
+  transition: all .3s;
+  white-space: nowrap;
+  overflow: hidden;
+
+}
+
+.s-page-btn-enter-from,
+.s-page-btn-leave-to {
+  padding: 0;
+  opacity: 0;
+  font-size: 0;
+  
+  flex-grow: 0!important;
+}
+
+.s-page-ctrl {
+  --text-color: white;
+}
+@media (prefers-color-scheme: dark) {
+  .s-page-ctrl {
+    --text-color: black;
+  }
+}
+
+.btn-primary, .btn-primary:not(:disabled):not(.disabled):active,
+.btn-outline-primary:not(:disabled):not(.disabled):active,
+.btn-outline-primary:hover{
+  color: var(--text-color);
+  background-color: var(--primary);
+  border-color: var(--primary);
+}
+
+.btn-outline-primary {
+  color: var(--primary);
+  border-color: var(--primary);
+}
+
+</style>

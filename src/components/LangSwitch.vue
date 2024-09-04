@@ -30,8 +30,35 @@ if (langSettings) {
 
 </script>
 <template>
-    <select class="btn btn-dark mb-1" v-model="locale">
-        <option value="zh">中文</option>
-        <option value="en">English</option>
-    </select>
+    <div class="lang-switch">
+        <div class="lang-btn" @click="locale = 'zh'" :class="{active: locale === 'zh'}">
+            中文
+        </div>
+        <div class="lang-btn" @click="locale = 'en'" :class="{active: locale === 'en'}">
+            English
+        </div>
+    </div>
 </template>
+
+<style scoped>
+    .lang-switch {
+        display: flex;
+        justify-content: center;
+    }
+    .lang-btn {
+        -webkit-user-select: none;
+        user-select: none;
+        margin: 0 5px;
+        transition: all 0.3s;
+        border-bottom: 2px solid transparent;
+        font-weight: lighter;
+        cursor: pointer;
+    }
+    .lang-btn.active {
+        border-bottom-color: var(--primary);
+        font-weight: bold;
+    }
+    .lang-btn:hover {
+        color: var(--primary);
+    }
+</style>
