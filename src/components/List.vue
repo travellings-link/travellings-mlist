@@ -411,7 +411,7 @@ const isChangelog = defineModel("isChangelog");
 }
 
 .btn:not(:disabled):hover .s-page-btn-icon {
-  border-color: white;
+  border-color: var(--text-color);
 }
 
 .s-page-btn-icon.prev {
