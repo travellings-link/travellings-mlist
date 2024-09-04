@@ -180,6 +180,37 @@ const isChangelog = ref(false);
       </div>
 
       <div class="mt-3 action-btns row">
+        
+        <div class="col-lg-4 col-12 mb-2 mb-lg-0">
+          <div class="menu-card">
+            <div class="menu-card-title">
+              <i class="fa fa-fw fa-cog"></i>
+              {{ t('actions') }}
+            </div>
+            <div class="menu-card-items">
+              <a class="menu-card-item" href="#" @click.prevent="refresh">
+                <i class="fa fa-fw fa-refresh"></i> {{ t('refresh') }}
+              </a>
+              <Transition>
+                <a class="menu-card-item" href="javascript:;" v-if="isAdmin" @click="isSyncing = true">
+                  <i class="fa fa-fw fa-plus"></i> {{ t('fastAdd') }}
+                </a>
+              </Transition>
+              <Transition>
+                <a class="menu-card-item" href="javascript:;" v-tooltip="t('logoutTip')" v-if="isAdmin" @click="logout">
+                  <i class="fa fa-fw fa-user"></i> {{ username }} ({{ t('admin') }})
+                </a>
+              </Transition>
+              <Transition>
+                <a class="menu-card-item" href="javascript:;" v-tooltip="t('logoutTip')" v-if="isNormalUser"
+                  @click="logout">
+                  <i class="fa fa-fw fa-user"></i> {{ username }} ({{ t('normalUser') }})
+                </a>
+              </Transition>
+            </div>
+          </div>
+        </div>
+
         <div class="col-lg-4 col-6">
           <div class="menu-card">
             <div class="menu-card-title">
@@ -236,36 +267,6 @@ const isChangelog = ref(false);
                 <option value="5XX">5XX</option>
                 <option value="WAIT">WAIT</option>
               </select>
-            </div>
-          </div>
-        </div>
-
-        <div class="col-lg-4 col-12 mt-2 mt-lg-0">
-          <div class="menu-card">
-            <div class="menu-card-title">
-              <i class="fa fa-fw fa-cog"></i>
-              {{ t('actions') }}
-            </div>
-            <div class="menu-card-items">
-              <a class="menu-card-item" href="#" @click.prevent="refresh">
-                <i class="fa fa-fw fa-refresh"></i> {{ t('refresh') }}
-              </a>
-              <Transition>
-                <a class="menu-card-item" href="javascript:;" v-if="isAdmin" @click="isSyncing = true">
-                  <i class="fa fa-fw fa-plus"></i> {{ t('fastAdd') }}
-                </a>
-              </Transition>
-              <Transition>
-                <a class="menu-card-item" href="javascript:;" v-tooltip="t('logoutTip')" v-if="isAdmin" @click="logout">
-                  <i class="fa fa-fw fa-user"></i> {{ username }} ({{ t('admin') }})
-                </a>
-              </Transition>
-              <Transition>
-                <a class="menu-card-item" href="javascript:;" v-tooltip="t('logoutTip')" v-if="isNormalUser"
-                  @click="logout">
-                  <i class="fa fa-fw fa-user"></i> {{ username }} ({{ t('normalUser') }})
-                </a>
-              </Transition>
             </div>
           </div>
         </div>
@@ -366,5 +367,15 @@ const isChangelog = ref(false);
     --item-bg-hover: #1f2c3a;
     --text-color: white;
   }
+}
+
+@media (max-width: 768px) {
+  .action-btns .col-6:nth-last-child(2) {
+    padding-right: 5px;
+  }
+  .action-btns .col-6:last-child {
+    padding-left: 5px;
+  }
+
 }
 </style>
