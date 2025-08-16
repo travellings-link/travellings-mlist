@@ -79,7 +79,7 @@ const toast = useToast();
 const listData = ref([]);
 const getData = async () => {
   loading.value = true;
-  listData.value = await getAllDataWithFallback(toast);
+  listData.value = (await getAllDataWithFallback(toast)).data;
   loading.value = false;
 };
 
