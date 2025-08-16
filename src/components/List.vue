@@ -1,5 +1,5 @@
 <script setup>
-import { api, getStatusColor, getTagColor, getStatusIcon } from '@/utils.js';
+import { api, getStatusColor, getTagColor, getStatusIcon, getAllDataWithFallback } from '@/utils.js';
 import { ref, onMounted, computed, watch } from 'vue';
 import { useI18n } from 'vue-i18n';
 import { useToast } from 'vue-toastification';
@@ -79,7 +79,7 @@ const toast = useToast();
 const listData = ref([]);
 const getData = async () => {
   loading.value = true;
-  listData.value = await api("/all", "GET", toast);
+  listData.value = await getAllDataWithFallback(toast);
   loading.value = false;
 };
 
