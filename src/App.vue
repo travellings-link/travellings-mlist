@@ -274,10 +274,6 @@ const isChangelog = ref(false);
 
       <LangSwitch class="mt-3" />
       <div class="text-center mt-3">
-        <a href="https://beian.miit.gov.cn/" target="_blank">闽ICP备2023011626号-1</a> |
-        <a target="_blank"
-          href="http://www.beian.gov.cn/portal/registerSystemInfo?recordcode=35059102000048">闽公网安备35059102000048号</a>
-        <br>
         Frontend by <a href="https://github.com/xuanzhi33">@xuanzhi33</a> |
         Backend by <a href="https://github.com/BLxcwg666">@BLxcwg666</a> <br>
         <a href="https://github.com/travellings-link/travellings-mlist" target="_blank"><i class="fa fa-github"></i> {{
